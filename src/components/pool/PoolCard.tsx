@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { use, useContext, useEffect, useRef, useState } from "react";
+import { use, useContext, useEffect, useMemo, useRef, useState } from "react";
 import PoolCardDetails from "./PoolCardDetails";
 import { Pool } from "../../state/types";
 import BigNumber from "bignumber.js";
@@ -25,6 +25,8 @@ import stakeContract from "@/config/abi/stakeContract.json";
 //import DepositModal from "./modals/DepositModal";
 //import WithdrawtModal from "./modals/WithdrawModal";
 import Link from "next/link";
+import CountdownTimer from "../CountDown";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 const DepositModal = dynamic(() => import("./modals/DepositModal"), {
   ssr: false,
 });
@@ -125,6 +127,21 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
     setUserBalance(Number(userTokenBalance.data?.formatted));
   }, [userTokenBalance]);
 
+  let [someState, setSomeState] = useState(0);
+
+  const contractEnd = useContractRead({
+    address: getAddress(pool.contractAddress) as `0x${string}`,
+    abi: stakeContract,
+    functionName: "periodFinish",
+    cacheTime: 2_000_0,
+    enabled: false,
+  });
+  const lessCodeThanCheckingPrevRow = useMemo(
+    () => setSomeState(Number(contractEnd.data)),
+    [contractEnd.data]
+  );
+
+  const countdown = CountdownTimer(someState);
   const [approving, setApproving] = useState(false);
   const { data: signer } = useSigner();
 
@@ -360,6 +377,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
             tvl={totalSupply * tokienPrice}
             displayApr={pool.apr}
           />
+
           {chain?.id === 56 ? (
             <div className="flex justify-center col-1">{claimButton}</div>
           ) : (
@@ -425,6 +443,19 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
             </div>
           </div>
         )}
+        <div>
+          {countdown ? (
+            <div className="relative ml-[40px] flex text-white justify-start">
+              Ends in: {countdown}
+            </div>
+          ) : (
+            <SkeletonTheme baseColor="#202020" highlightColor="#a9b7c1">
+              <p>
+                <Skeleton count={1} duration={2} />
+              </p>
+            </SkeletonTheme>
+          )}
+        </div>
         {expandCard ? (
           <div className="border-b border-[#1e6365] my-4"></div>
         ) : (
@@ -452,6 +483,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
               <div className="text-green-400 md:text-[3rem] text-[2rem] text-gradient-to-b">
                 {earned > 0 ? earned.toFixed(3) : 0}
               </div>
+              <span className="text-sm text-white">4TOKEN</span>
             </div>
           </div>
         ) : (
