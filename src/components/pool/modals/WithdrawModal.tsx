@@ -97,13 +97,31 @@ const WithdrawtModal = memo(
       hash: data?.hash,
 
       onSuccess(data) {
-        toast.success("Withdraw success 👌");
+        toast.success("Unstake success 👌");
         //console.log("Success", data);
         setDepositing(false);
         setModalOpenWait(false);
         setModalOpen(false);
       },
+      onError(error) {
+        const theme = document.documentElement.classList.contains("dark")
+          ? "dark"
+          : "default";
+        if (theme === "default") {
+          toast.error("Failed to get rewards: " + error, {
+            theme: "light",
+          });
+        } else {
+          toast.error("Failed to get rewards: " + error, {
+            theme: "dark",
+          });
+        }
+        setDepositing(false);
+        setModalOpenWait(false);
+        setModalOpen(false);
+      },
     });
+
     useEffect(() => {
       console.log(transaction?.isSuccess);
     }, [transaction]);

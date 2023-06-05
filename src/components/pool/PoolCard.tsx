@@ -34,6 +34,13 @@ const WithdrawtModal = dynamic(() => import("./modals/WithdrawModal"), {
   ssr: false,
 });
 import numeral from "numeral";
+import {
+  useAllowance,
+  useEarn,
+  useStaked,
+  useSupply,
+  useTokenBalance,
+} from "@/hooks/useCalls";
 export interface PoolsWithStakedValue extends Pool {
   liquidity?: BigNumber;
 }
@@ -68,64 +75,50 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
     console.log(pancakeswapLPPrice);
   }, [pancakeswapPrice, pancakeswapLPPrice, pool]);
 
-  const contractReadAllowance = useContractRead({
-    address: getAddress(pool.stakingToken) as `0x${string}`,
-    abi: TokenABI,
-    functionName: "allowance",
-    args: [address, getAddress(pool.contractAddress)],
-    watch: true,
-  });
+  const userAlowance = useAllowance(
+    getAddress(pool.stakingToken) as `0x${string}`,
+    address,
+    getAddress(pool.contractAddress) as `0x${string}`
+  );
 
-  const contractReadStakedBalance = useContractRead({
-    address: getAddress(pool.contractAddress) as `0x${string}`,
-    abi: TokenABI,
-    functionName: "balanceOf",
-    args: [address],
-    watch: true,
-  });
+  const userStaked = useStaked(
+    address,
+    getAddress(pool.contractAddress) as `0x${string}`
+  );
 
-  const contractReadEarned = useContractRead({
-    address: getAddress(pool.contractAddress) as `0x${string}`,
-    abi: stakeContract,
-    functionName: "earned",
-    args: [address],
-    watch: true,
-  });
+  const userEarn = useEarn(
+    address,
+    getAddress(pool.contractAddress) as `0x${string}`
+  );
 
-  const contractReadTotalSupply = useContractRead({
-    address: getAddress(pool.contractAddress) as `0x${string}`,
-    abi: stakeContract,
-    functionName: "totalSupply",
-    watch: true,
-  });
+  const contractSupply = useSupply(
+    getAddress(pool.contractAddress) as `0x${string}`
+  );
 
-  const userTokenBalance = useBalance({
-    address: address,
-    token: getAddress(pool.stakingToken) as `0x${string}`,
-    watch: true,
-  });
+  const userTokenBalance = useTokenBalance(
+    getAddress(pool.stakingToken) as `0x${string}`,
+    address
+  );
 
   useEffect(() => {
-    const allowanceGet = (
-      Number(contractReadAllowance.data) /
-      10 ** 18
-    ).toFixed(2);
+    const allowanceGet = (Number(userAlowance?.data) / 10 ** 18).toFixed(2);
     setAllowanceFrom(Number(allowanceGet));
-  }, [contractReadAllowance]);
-  useEffect(() => {
-    setStaked(Number(contractReadStakedBalance.data) / 10 ** 18);
-  }, [contractReadStakedBalance]);
+  }, [userAlowance]);
 
   useEffect(() => {
-    setEarned(Number(contractReadEarned.data) / 10 ** 18);
-  }, [contractReadEarned]);
+    setStaked(Number(userStaked?.data) / 10 ** 18);
+  }, [userStaked]);
 
   useEffect(() => {
-    setTotalSupply(Number(contractReadTotalSupply.data) / 10 ** 18);
-  }, [contractReadTotalSupply]);
+    setEarned(Number(userEarn?.data) / 10 ** 18);
+  }, [userEarn]);
 
   useEffect(() => {
-    setUserBalance(Number(userTokenBalance.data?.formatted));
+    setTotalSupply(Number(contractSupply?.data) / 10 ** 18);
+  }, [contractSupply]);
+
+  useEffect(() => {
+    setUserBalance(Number(userTokenBalance?.data?.formatted));
   }, [userTokenBalance]);
 
   let [someState, setSomeState] = useState(0);
@@ -204,9 +197,6 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
     }
   }, [enableButton, isConnected]);
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalOpenUnstake, setModalOpenUnstake] = useState(false); //
-  const [depositAmount, setDepositAmount] = useState("");
   const [claiming, setClaiming] = useState(false);
 
   const { config, error } = usePrepareContractWrite({

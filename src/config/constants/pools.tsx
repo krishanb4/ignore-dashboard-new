@@ -27,7 +27,7 @@ const pools: PoolConfig[] = [
     poolId: 2,
     name: "4TOKEN",
     token: tokens.fourtoken,
-    locked: true,
+    locked: false,
     stakingToken: {
       56: "0x61B83eDF87Ea662C695439A807c386455c9E797C",
     },
@@ -56,7 +56,7 @@ const pools: PoolConfig[] = [
       56: "0x61B83eDF87Ea662C695439A807c386455c9E797C",
     },
     contractAddress: {
-      56: "0x9e844A77f120FdBC153fD516C42428388A73F071",
+      56: "0xfFC7e61a86EDc649faA693d60157485be4aD87Ce",
     },
     isLp: false,
     poolCategory: PoolCategory["15D_LOCK"],
@@ -77,7 +77,7 @@ const pools: PoolConfig[] = [
       56: "0x61B83eDF87Ea662C695439A807c386455c9E797C",
     },
     contractAddress: {
-      56: "0xf247112f926EcdfC63f8EC60ac4ef173E12BD3FB",
+      56: "0x3700b8D3b3A5f25959DA8fB9444133dB5594950c",
     },
     isLp: false,
     poolCategory: PoolCategory["1Y_LOCK"],
@@ -86,26 +86,6 @@ const pools: PoolConfig[] = [
     isFinished: false,
     buyURL: `https://pancakeswap.finance/swap?chain=bsc&outputCurrency=0x61B83eDF87Ea662C695439A807c386455c9E797C`,
   },
-  // {
-  //   poolId: 3,
-  //   name: "1Y LOCK",
-  //   token: tokens.fourtoken,
-  //   locked: true,
-  //   stakingToken: {
-  //     56: "0x61B83eDF87Ea662C695439A807c386455c9E797C",
-  //   },
-  //   earningToken: {
-  //     56: "0x61B83eDF87Ea662C695439A807c386455c9E797C",
-  //   },
-  //   contractAddress: {
-  //     56: "0xc66A9469fA4F5F9AC70484AC7748652fE75006F7",
-  //   },
-  //   isLp: false,
-  //   poolCategory: PoolCategory["1Y_LOCK"],
-  //   harvest: true,
-  //   sortOrder: 1,
-  //   isFinished: false,
-  // },
 ];
 
 export default pools;
