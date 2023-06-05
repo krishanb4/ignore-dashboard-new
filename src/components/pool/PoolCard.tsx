@@ -176,11 +176,11 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
     approveTokens().catch((error) => console.log(error));
   };
 
-  const [enableButton, setEnableButton] = useState("Enable");
+  const [enableButton, setEnableButton] = useState("Approve");
 
   useEffect(() => {
     if (isConnected) {
-      setEnableButton("Enable");
+      setEnableButton("Approve");
     } else {
       setEnableButton("Connect Wallet");
     }
@@ -485,7 +485,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
                     >
                       {approving ? (
                         <div className="flex items-center justify-center gap-2">
-                          <span className="hidden md:block">Enable </span>
+                          <span className="hidden md:block">Approve </span>
 
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -570,7 +570,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
                     target="_blank"
                     className="bg-gradient-to-br from-green-400 to-yellow-300 text-black text-sm pl-5 pr-5 rounded-[1rem]"
                   >
-                    Buy {pool.name}
+                    {pool.isLp ? "Add" : "Buy"} {pool.name}
                   </Link>
                 </div>
               </div>
@@ -619,7 +619,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
                     >
                       {approving ? (
                         <div className="flex items-center justify-center gap-2">
-                          <span className="hidden md:block">Enable </span>
+                          <span className="hidden md:block">Approve </span>
 
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -705,7 +705,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
                       target="_blank"
                       className="bg-gradient-to-br from-green-400 to-yellow-300 text-black text-sm pl-5 pr-5 rounded-[1rem]"
                     >
-                      Buy {pool.name}
+                      {pool.isLp ? "Add" : "Buy"} {pool.name}
                     </Link>
                   </div>
                 </div>

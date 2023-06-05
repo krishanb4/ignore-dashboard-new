@@ -136,7 +136,7 @@ const WithdrawtModal = memo(
             type="button"
             className="w-full bg-gradient-to-br from-green-400 to-yellow-300 text-white  focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
           >
-            Withdraw
+            Unstake
           </button>
         );
       } else {
@@ -145,7 +145,7 @@ const WithdrawtModal = memo(
             type="button"
             className="w-full opacity-25 bg-gradient-to-br from-green-400 to-yellow-300 text-white  focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
           >
-            Withdraw
+            Unstake{" "}
           </button>
         );
       }
@@ -178,7 +178,7 @@ const WithdrawtModal = memo(
             onClick={() => setModalOpen(true)}
             className="bg-gradient-to-br from-green-400 to-yellow-300 text-black text-sm p-3 pl-5 pr-5 ml-1 rounded-[1rem]"
           >
-            -
+            Unstake
           </button>
         ) : (
           ""
@@ -211,7 +211,7 @@ const WithdrawtModal = memo(
                 <div className="p-6 text-center">
                   <Spinner />
                   <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                    Withdrawing please wait...
+                    Unstaking please wait...
                   </h3>
                 </div>
               </div>
@@ -244,7 +244,7 @@ const WithdrawtModal = memo(
                 </button>
                 <div className="px-6 py-6 lg:px-8">
                   <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">
-                    Withdraw {name}
+                    Unstake {name}
                   </h3>
                   <div className="space-y-6">
                     <div className="relative">

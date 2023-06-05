@@ -405,7 +405,15 @@ const ExampleCharts = () => {
                 </p>
               </SkeletonTheme>
             ) : (
-              <Chart options={options} series={series1} type="area" />
+              <div
+                data-background-color="#fcf8f8"
+                data-currency="usd"
+                data-coin-id="ignore-fud"
+                data-locale="en"
+                data-height="300"
+                data-width=""
+                className="coingecko-coin-price-chart-widget"
+              ></div>
             )}
           </div>
           <div className="border-2 dark:border-black border-gray-300 rounded-lg m-10 dark:bg-slate-900 bg-[#f0ffff] chart-container">
