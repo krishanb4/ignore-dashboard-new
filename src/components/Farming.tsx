@@ -7,7 +7,7 @@ import { PoolConfig } from "@/config/constants/types";
 const StakingCards = () => {
   const poolsFrom = usePools();
 
-  const filteredPools = poolsFrom.filter((pool: PoolConfig) => !pool.isLp);
+  const filteredPools = poolsFrom.filter((pool: PoolConfig) => pool.isLp);
 
   return (
     <>

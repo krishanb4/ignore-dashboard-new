@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import Charts from "./Charts";
 import StakingCards from "./StakingCard";
+import Farming from "./Farming";
 
 const SelectButtons: React.FC = () => {
   const [selectedButton, setSelectButton] = useState("Dashboard");
   const SelectButton = [
     { name: "Dashboard" },
     { name: "Staking" },
-    { name: "Marketplace" },
+    { name: "Farming" },
   ];
 
   return (
@@ -45,7 +46,7 @@ const SelectButtons: React.FC = () => {
       ) : selectedButton == "Staking" ? (
         <StakingCards />
       ) : (
-        ""
+        <Farming />
       )}
       {}
     </>
