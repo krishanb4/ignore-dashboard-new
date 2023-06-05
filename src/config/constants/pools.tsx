@@ -44,6 +44,27 @@ const pools: PoolConfig[] = [
     isFinished: false,
     buyURL: `https://pancakeswap.finance/swap?chain=bsc&outputCurrency=0x61B83eDF87Ea662C695439A807c386455c9E797C`,
   },
+  {
+    poolId: 3,
+    name: "4TOKEN",
+    token: tokens.fourtoken,
+    locked: true,
+    stakingToken: {
+      56: "0x61B83eDF87Ea662C695439A807c386455c9E797C",
+    },
+    earningToken: {
+      56: "0x61B83eDF87Ea662C695439A807c386455c9E797C",
+    },
+    contractAddress: {
+      56: "0x9e844A77f120FdBC153fD516C42428388A73F071",
+    },
+    isLp: false,
+    poolCategory: PoolCategory["1Y_LOCK"],
+    harvest: true,
+    sortOrder: 1,
+    isFinished: false,
+    buyURL: `https://pancakeswap.finance/swap?chain=bsc&outputCurrency=0x61B83eDF87Ea662C695439A807c386455c9E797C`,
+  },
   // {
   //   poolId: 3,
   //   name: "1Y LOCK",

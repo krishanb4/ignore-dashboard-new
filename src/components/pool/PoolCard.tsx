@@ -133,8 +133,6 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
     address: getAddress(pool.contractAddress) as `0x${string}`,
     abi: stakeContract,
     functionName: "periodFinish",
-    cacheTime: 2_000_0,
-    enabled: false,
   });
   const lessCodeThanCheckingPrevRow = useMemo(
     () => setSomeState(Number(contractEnd.data)),
@@ -144,6 +142,8 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
   const countdown = CountdownTimer(someState);
   const [approving, setApproving] = useState(false);
   const { data: signer } = useSigner();
+
+  console.log(countdown);
 
   async function approveTokens() {
     const amount = ethers.utils.parseUnits(
