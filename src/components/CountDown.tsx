@@ -15,7 +15,7 @@ function CountdownTimer(timestamp: number) {
       // Check if the countdown has reached zero
       if (remainingTime <= 0) {
         clearInterval(interval);
-        setCountdown("00:00:00");
+        setCountdown("Ended");
       } else {
         const days = Math.floor(remainingTime / (24 * 60 * 60));
         const hours = Math.floor((remainingTime % (24 * 60 * 60)) / (60 * 60));
