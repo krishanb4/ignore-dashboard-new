@@ -728,7 +728,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
                           </svg>
                         </div>
                       ) : (
-                        <span className="hidden md:block">{enableButton} </span>
+                        <span className="block md:hidden">{enableButton}</span>
                       )}
                     </button>
                   )}

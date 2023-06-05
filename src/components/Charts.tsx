@@ -302,7 +302,7 @@ const ExampleCharts = () => {
                 <p className="leading-relaxed text-base text-black dark:text-white">
                   $
                   {numeral(
-                    rewards[rewards.length - 1].cumulative_sum.toFixed(2)
+                    rewards[rewards.length - 1]?.cumulative_sum.toFixed(2)
                   )
                     .format("0.000a")
                     .toUpperCase()}{" "}
