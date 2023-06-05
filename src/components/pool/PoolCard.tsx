@@ -33,6 +33,7 @@ const DepositModal = dynamic(() => import("./modals/DepositModal"), {
 const WithdrawtModal = dynamic(() => import("./modals/WithdrawModal"), {
   ssr: false,
 });
+import numeral from "numeral";
 export interface PoolsWithStakedValue extends Pool {
   liquidity?: BigNumber;
 }
@@ -143,7 +144,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
   const [approving, setApproving] = useState(false);
   const { data: signer } = useSigner();
 
-  console.log(countdown);
+  // console.log(countdown);
 
   async function approveTokens() {
     const amount = ethers.utils.parseUnits(
@@ -466,9 +467,13 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
             <div className="col-1">
               <div className="text-[#669ca0]">Your deposit</div>
               <div className="text-white md:text-[3rem] text-[2rem]">
-                {staked > 0 ? staked.toFixed(3) : 0}
+                {staked > 0 ? numeral(staked).format("0.0a") : 0}
                 <span className="text-sm grid">
-                  (${staked > 0 ? (staked * tokienPrice).toFixed(3) : 0})
+                  ($
+                  {staked > 0
+                    ? numeral(staked * tokienPrice).format("0.000a")
+                    : 0}
+                  )
                 </span>
               </div>
             </div>
