@@ -418,7 +418,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
             <div className="relative ml-[40px] flex text-white justify-start">
               Ends in: {countdown}
               {pool.locked ? (
-                <span className="absolute text-[#ff4343] top-0 right-0 mr-[]">
+                <span className=" text-[#ff4343] top-0 right-0 ml-[30px]">
                   Early unstaking will cost you 4% penalty
                 </span>
               ) : (

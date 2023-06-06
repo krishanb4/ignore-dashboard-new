@@ -109,8 +109,6 @@ export function useContracts(contractaddress: `0x${string}`) {
 }
 
 export function useTransaction(hash: `0x${string}` | undefined) {
-  console.log("here");
-
   const transaction = useWaitForTransaction({
     hash: hash,
     onSuccess(data) {
