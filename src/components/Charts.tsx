@@ -420,11 +420,11 @@ const ExampleCharts = () => {
           <div className="border-2 dark:border-black border-gray-300 rounded-lg m-10 dark:bg-slate-900 bg-[#f0ffff] chart-container">
             <p className="text-center text-black dark:text-white">Liquidity</p>
             <div className="relative inline-block text-left">
-              <div>
+              <div className="ml-[10px]">
                 <button
                   onClick={() => setIsDropDown(!isDropDown)}
                   type="button"
-                  className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  className="inline-flex w-full justify-center gap-x-1.5 rounded-md dark:bg-[#115657] dark:text-white bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                   id="menu-button"
                   aria-expanded="true"
                   aria-haspopup="true"
