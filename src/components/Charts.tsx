@@ -38,6 +38,8 @@ const ExampleCharts = () => {
     rewards,
     lp,
     price,
+    archerswapTotalLP,
+    pancakeSwapTotalLP,
   } = useCharts();
 
   const options = {
@@ -332,7 +334,10 @@ const ExampleCharts = () => {
               ) : (
                 <ul>
                   <li>Price : ${Number(pancakeswapPrice).toFixed(6)}</li>
-                  <li>Liquidity : $539.05K</li>
+                  <li>
+                    Liquidity : $
+                    {numeral(pancakeSwapTotalLP).format("0.000a").toUpperCase()}
+                  </li>
                 </ul>
               )}
             </div>
@@ -355,7 +360,10 @@ const ExampleCharts = () => {
               ) : (
                 <ul>
                   <li>Price : ${archerswapPrice}</li>
-                  <li>Liquidity : $539.05K</li>
+                  <li>
+                    Liquidity : $
+                    {numeral(archerswapTotalLP).format("0.000a").toUpperCase()}
+                  </li>
                 </ul>
               )}
             </div>

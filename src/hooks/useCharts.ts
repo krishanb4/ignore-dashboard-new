@@ -19,6 +19,8 @@ type ChartData = {
   pancakeswapLPPrice: number;
   lp: LPData;
   price: any;
+  archerswapTotalLP: number;
+  pancakeSwapTotalLP: number;
 };
 
 type Rewards = {
@@ -54,6 +56,8 @@ export default function useCharts(): ChartData {
   const [archerswapLPPrice, setArcherswapLPPrice] = useState(0);
   const [iceCreamswapLPPrice, setIceCreamswapLPPrice] = useState(0);
   const [pancakeswapLPPrice, setPancakeswapLPPrice] = useState(0);
+  const [archerswapTotalLP, setArcherswapTotalLP] = useState(0);
+  const [pancakeSwapTotalLP, setPancakeSwapTotalLP] = useState(0);
   const [rewards, setRewards] = useState([] as Rewards[]);
   const [lp, setLP] = useState({} as LPData);
   const [price, setPrice] = useState()
@@ -80,11 +84,13 @@ export default function useCharts(): ChartData {
         if (response.status === 200) {
           setLoadingPrices(false);
         }
-        setArcherswapLPPrice(response.data["lpPrices"]["archerswapLPPrice"]);
+        setArcherswapLPPrice(response.data["lpPrices"]["archerswapLP"]["lpPrice"]);
+        setArcherswapTotalLP(response.data["lpPrices"]["archerswapLP"]["totalLP"]);
         setIceCreamswapLPPrice(
-          response.data["lpPrices"]["icecreameswapLPPrice"]
+          response.data["lpPrices"]["icecreameswapLP"]["lpPrice"]
         );
-        setPancakeswapLPPrice(response.data["lpPrices"]["pancakeswapLPPrice"]);
+        setPancakeswapLPPrice(response.data["lpPrices"]["pancakeswapLP"]["lpPrice"]);
+        setPancakeSwapTotalLP(response.data["lpPrices"]["pancakeswapLP"]["totalLP"]);
       })
       .catch((error) => {
         console.error(error); // handle error
@@ -189,7 +195,9 @@ export default function useCharts(): ChartData {
     pancakeswapLPPrice,
     rewards,
     lp,
-    price
+    price,
+    archerswapTotalLP,
+    pancakeSwapTotalLP,
   };
 }
 
