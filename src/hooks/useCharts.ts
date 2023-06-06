@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import axios from "axios";
 
 type ChartData = {
@@ -18,6 +18,7 @@ type ChartData = {
   iceCreamswapLPPrice: number;
   pancakeswapLPPrice: number;
   lp: LPData;
+  price: any;
 };
 
 type Rewards = {
@@ -55,6 +56,7 @@ export default function useCharts(): ChartData {
   const [pancakeswapLPPrice, setPancakeswapLPPrice] = useState(0);
   const [rewards, setRewards] = useState([] as Rewards[]);
   const [lp, setLP] = useState({} as LPData);
+  const [price, setPrice] = useState()
 
   useEffect(() => {
     axios
@@ -157,6 +159,19 @@ export default function useCharts(): ChartData {
       });
   }, []);
 
+  useEffect(() => {
+    axios
+      .get("https://api.coingecko.com/api/v3/coins/ignore-fud/market_chart?vs_currency=usd&days=7")
+      .then((response) => {
+        const data = response.data["prices"];
+
+        setPrice(data);
+      })
+      .catch((error) => {
+        console.error(error); // handle error
+      });
+  });
+
   return {
     tokenData,
     tokenBurnData,
@@ -174,5 +189,7 @@ export default function useCharts(): ChartData {
     pancakeswapLPPrice,
     rewards,
     lp,
+    price
   };
 }
+

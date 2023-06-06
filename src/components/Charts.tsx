@@ -37,6 +37,7 @@ const ExampleCharts = () => {
     pancakeswapLPPrice,
     rewards,
     lp,
+    price,
   } = useCharts();
 
   const options = {
@@ -47,7 +48,12 @@ const ExampleCharts = () => {
       enabled: false,
     },
     xaxis: {
-      categories: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+      categories: price?.map((prices: any) => {
+        const timestamp = prices[0];
+        // Assuming you want to format the timestamp as a readable date/time string
+        const date = new Date(timestamp);
+        return date.toLocaleString(); // Adjust the formatting as per your requirements
+      }),
       labels: {
         style: {
           colors: "#34545f",
@@ -158,7 +164,10 @@ const ExampleCharts = () => {
   const series1 = [
     {
       name: "token-price",
-      data: [30, 40, 25, 50, 49, 21, 70, 51],
+      data: price?.map((prices: any) => {
+        const price4 = prices[1];
+        return price4.toFixed(6);
+      }),
     },
   ];
   const series2 = [
@@ -170,14 +179,6 @@ const ExampleCharts = () => {
           )
         : [],
     },
-    // {
-    //   name: "Liquidity (4TOKEN) K",
-    //   data: lp[selectSwap.toLowerCase() + "Lp"]
-    //     ? lp[selectSwap.toLowerCase() + "Lp"].map(
-    //         (item) => item.total_token_amount / 1000
-    //       )
-    //     : [],
-    // },
   ];
   const series3 = [
     {
@@ -200,7 +201,7 @@ const ExampleCharts = () => {
     <>
       <div className="flex flex-wrap justify-center mt-10 text-center">
         <div className="p-4 w-[20rem] max-w-sm ">
-          <div className="rounded-lg h-full bg-[#e5e5e5] shadow shadow-[#02ad02]/50 dark:bg-[#272e39]  p-8 flex-col text-center">
+          <div className="rounded-lg h-full bg-[#115657] shadow shadow-[#02ad02]/50 dark:bg-[#115657]  p-8 flex-col text-center">
             <div className="items-center mb-3">
               <h2 className="text-black dark:text-white text-lg font-medium">
                 4TOKEN
@@ -237,7 +238,7 @@ const ExampleCharts = () => {
         </div>
 
         <div className="p-4 w-[20rem] max-w-sm">
-          <div className="flex rounded-lg h-full bg-[#e5e5e5] shadow shadow-[#02ad02]/50 dark:bg-[#272e39] p-8 flex-col text-center">
+          <div className="flex rounded-lg h-full bg-[#115657] shadow shadow-[#02ad02]/50 dark:bg-[#115657] p-8 flex-col text-center">
             <div className=" items-center mb-3">
               <h2 className="text-black dark:text-white text-lg font-medium">
                 Total Liquidity
@@ -260,7 +261,7 @@ const ExampleCharts = () => {
         </div>
 
         <div className="p-4 w-[20rem] max-w-sm">
-          <div className="flex rounded-lg h-full bg-[#e5e5e5] shadow shadow-[#02ad02]/50 dark:bg-[#272e39] p-8 flex-col text-center">
+          <div className="flex rounded-lg h-full bg-[#115657] shadow shadow-[#02ad02]/50 dark:bg-[#115657] p-8 flex-col text-center">
             <div className=" items-center mb-3">
               <h2 className="text-black dark:text-white text-lg font-medium">
                 Token Burned
@@ -285,7 +286,7 @@ const ExampleCharts = () => {
         </div>
 
         <div className="p-4 w-[20rem] max-w-sm">
-          <div className="flex rounded-lg h-full bg-[#e5e5e5] shadow shadow-[#02ad02]/50 dark:bg-[#272e39] p-8 flex-col text-center">
+          <div className="flex rounded-lg h-full bg-[#115657] shadow shadow-[#02ad02]/50 dark:bg-[#115657] p-8 flex-col text-center">
             <div className=" items-center mb-3">
               <h2 className="text-black dark:text-white text-lg font-medium">
                 Total USDT Rewards
@@ -312,9 +313,33 @@ const ExampleCharts = () => {
           </div>
         </div>
       </div>
+
       <div className="flex flex-wrap justify-center mt-10 text-center">
         <div className="p-4 w-[20rem] max-w-sm">
-          <div className=" rounded-lg h-full bg-[#e5e5e5] shadow shadow-[#02ad02]/50 dark:bg-[#272e39] p-8 flex-col text-center">
+          <div className="flex rounded-lg h-full bg-[#115657] shadow shadow-[#02ad02]/50 dark:bg-[#115657] p-8 flex-col text-center">
+            <div className=" items-center mb-3">
+              <h2 className="text-black dark:text-white text-lg font-medium">
+                PancakeSwap
+              </h2>
+            </div>
+            <div className="flex flex-col justify-between text-black dark:text-white flex-grow text-center">
+              {isLoadingPrices ? (
+                <SkeletonTheme baseColor="#202020" highlightColor="#a9b7c1">
+                  <p>
+                    <Skeleton count={2} duration={2} />
+                  </p>
+                </SkeletonTheme>
+              ) : (
+                <ul>
+                  <li>Price : ${Number(pancakeswapPrice).toFixed(6)}</li>
+                  <li>Liquidity : $539.05K</li>
+                </ul>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="p-4 w-[20rem] max-w-sm">
+          <div className=" rounded-lg h-full bg-[#115657] shadow shadow-[#02ad02]/50 dark:bg-[#115657] p-8 flex-col text-center">
             <div className=" items-center mb-3">
               <h2 className="text-black dark:text-white text-lg font-medium">
                 ArcherSwap
@@ -338,31 +363,7 @@ const ExampleCharts = () => {
         </div>
 
         <div className="p-4 w-[20rem] max-w-sm">
-          <div className="flex rounded-lg h-full bg-[#e5e5e5] shadow shadow-[#02ad02]/50 dark:bg-[#272e39] p-8 flex-col text-center">
-            <div className=" items-center mb-3">
-              <h2 className="text-black dark:text-white text-lg font-medium">
-                IceCreamSwap
-              </h2>
-            </div>
-            <div className="flex flex-col justify-between text-black dark:text-white flex-grow text-center">
-              {isLoadingPrices ? (
-                <SkeletonTheme baseColor="#202020" highlightColor="#a9b7c1">
-                  <p>
-                    <Skeleton count={2} duration={2} />
-                  </p>
-                </SkeletonTheme>
-              ) : (
-                <ul>
-                  <li>Price : ${iceCreamswapPrice}</li>
-                  <li>Liquidity : $539.05K</li>
-                </ul>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div className="p-4 w-[20rem] max-w-sm">
-          <div className="flex rounded-lg h-full bg-[#e5e5e5] shadow shadow-[#02ad02]/50 dark:bg-[#272e39] p-8 flex-col text-center">
+          <div className="flex rounded-lg h-full bg-[#115657] shadow shadow-[#02ad02]/50 dark:bg-[#115657] p-8 flex-col text-center">
             <div className=" items-center mb-3">
               <h2 className="text-black dark:text-white text-lg font-medium">
                 Burned Details
@@ -405,15 +406,7 @@ const ExampleCharts = () => {
                 </p>
               </SkeletonTheme>
             ) : (
-              <div
-                data-background-color="#fcf8f8"
-                data-currency="usd"
-                data-coin-id="ignore-fud"
-                data-locale="en"
-                data-height="300"
-                data-width=""
-                className="coingecko-coin-price-chart-widget"
-              ></div>
+              <Chart options={options} series={series1} type="area" />
             )}
           </div>
           <div className="border-2 dark:border-black border-gray-300 rounded-lg m-10 dark:bg-slate-900 bg-[#f0ffff] chart-container">

@@ -1,4 +1,10 @@
-import { useBalance, useContractRead } from "wagmi";
+import {
+  useBalance,
+  useContractRead,
+  useContractWrite,
+  usePrepareContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
 import TokenABI from "@/config/abi/bscUSDT.json";
 import stakeContract from "@/config/abi/stakeContract.json";
 
@@ -83,4 +89,33 @@ export function useTokenBalance(
     });
     return userTokenBalance;
   } catch (e) {}
+}
+
+export function useContractConfig(contractaddress: `0x${string}`) {
+  const { config, error } = usePrepareContractWrite({
+    address: contractaddress,
+    abi: stakeContract,
+    functionName: "getReward",
+  });
+  return config;
+}
+
+export function useContracts(contractaddress: `0x${string}`) {
+  const config = useContractConfig(contractaddress);
+  const { data, isLoading, isSuccess, write, status } = useContractWrite({
+    ...config,
+  });
+  return { data, isLoading, isSuccess, write, status };
+}
+
+export function useTransaction(hash: `0x${string}` | undefined) {
+  console.log("here");
+
+  const transaction = useWaitForTransaction({
+    hash: hash,
+    onSuccess(data) {
+      console.log("Success", data);
+    },
+  });
+  return transaction;
 }

@@ -36,10 +36,12 @@ const WithdrawtModal = dynamic(() => import("./modals/WithdrawModal"), {
 import numeral from "numeral";
 import {
   useAllowance,
+  useContracts,
   useEarn,
   useStaked,
   useSupply,
   useTokenBalance,
+  useTransaction,
 } from "@/hooks/useCalls";
 export interface PoolsWithStakedValue extends Pool {
   liquidity?: BigNumber;
@@ -199,52 +201,25 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
 
   const [claiming, setClaiming] = useState(false);
 
-  const { config, error } = usePrepareContractWrite({
-    address: getAddress(pool.contractAddress) as `0x${string}`,
-    abi: stakeContract,
-    functionName: "getReward",
-  });
-  const { data, isLoading, isSuccess, write, status } = useContractWrite({
-    ...config,
-    onError(error) {
-      setClaiming(false);
-      const theme = document.documentElement.classList.contains("dark")
-        ? "dark"
-        : "default";
-      if (theme === "default") {
-        toast.error("Failed to get rewards: " + error, {
-          theme: "light",
-        });
-      } else {
-        toast.error("Failed to get rewards: " + error, {
-          theme: "dark",
-        });
-      }
-    },
-    onSuccess(data) {
-      toast.success("Transaction successfully sent 👌");
-    },
-  });
+  const contractCall = useContracts(
+    getAddress(pool.contractAddress) as `0x${string}`
+  );
 
-  const transaction = useWaitForTransaction({
-    hash: data?.hash,
-    onSuccess(data) {
-      setClaiming(false);
-      toast.success("Reward claim success 👌");
-    },
-  });
+  const transaction = useTransaction(contractCall.data?.hash);
 
   useEffect(() => {
     if (transaction?.status === "success") {
+      console.log(transaction);
+
       setClaiming(false);
     }
   }, [transaction]);
 
-  const HanddleClaim = () => {
+  const HanddleClaim = async () => {
     if (claiming) return;
     if (!isConnected) return;
     setClaiming(true);
-    write?.();
+    await contractCall.write?.();
   };
 
   let claimButton;
@@ -371,12 +346,16 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
 
           {chain?.id === 56 ? (
             <div className="flex justify-center col-1">{claimButton}</div>
-          ) : (
+          ) : isConnected ? (
             <button
               onClick={() => switchNetwork?.(56)}
               className="bg-gradient-to-br from-red-400 to-red-300 text-white text-sm pt-0 pl-5 pr-5 rounded-[1rem]"
             >
               Wrong Network
+            </button>
+          ) : (
+            <button className="bg-gradient-to-br from-red-400 to-red-300 text-white text-sm pt-0 pl-5 pr-5 rounded-[1rem]">
+              Connect Wallet
             </button>
           )}
           <div className="flex items-center col-span-1 justify-end p-4">
@@ -438,6 +417,13 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
           {countdown ? (
             <div className="relative ml-[40px] flex text-white justify-start">
               Ends in: {countdown}
+              {pool.locked ? (
+                <span className="absolute text-[#ff4343] top-0 right-0 mr-[]">
+                  Early unstaking will cost you 4% penalty
+                </span>
+              ) : (
+                ""
+              )}
             </div>
           ) : (
             <SkeletonTheme baseColor="#202020" highlightColor="#a9b7c1">
@@ -503,6 +489,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
                           poolId={pool.poolId}
                           name={pool.name}
                           userBalance={staked}
+                          locked={pool.locked}
                         />
                       ) : (
                         ""
@@ -637,6 +624,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
                           poolId={pool.poolId}
                           name={pool.name}
                           userBalance={staked}
+                          locked={pool.locked}
                         />
                       ) : (
                         ""
