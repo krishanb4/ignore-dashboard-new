@@ -33,7 +33,9 @@ const WithdrawtModal = memo(
     const [depositing, setDepositing] = useState(false);
     const [modalOpenWait, setModalOpenWait] = useState(false);
     const [modalOpenDisclaimer, setModalOpenDisclaimer] = useState(false);
-    const [depositTo, setDepositTo] = useState("");
+    const [depositTo, setDepositTo] = useState<BigNumber>(
+      ethers.BigNumber.from(0)
+    );
     const handleChange = useCallback(
       (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -51,9 +53,9 @@ const WithdrawtModal = memo(
           depositAmount,
           decimals
         );
-        setDepositTo(depositAmountFormated.toString());
+        setDepositTo(depositAmountFormated);
       } else {
-        const depositAmountFormated = "0";
+        const depositAmountFormated = ethers.BigNumber.from(0);
         setDepositTo(depositAmountFormated);
       }
     }, [depositAmount]);

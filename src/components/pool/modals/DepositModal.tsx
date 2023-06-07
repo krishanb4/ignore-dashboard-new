@@ -28,10 +28,10 @@ const DepositModal = memo(
     const { chain } = useNetwork();
     const { chains, pendingChainId, switchNetwork } = useSwitchNetwork();
     const [modalOpen, setModalOpen] = useState(false);
-    const [depositAmount, setDepositAmount] = useState("");
+    const [depositAmount, setDepositAmount] = useState<string>("");
     const [depositing, setDepositing] = useState(false);
     const [modalOpenWait, setModalOpenWait] = useState(false);
-    const [depositTo, setDepositTo] = useState("");
+    const [depositTo, setDepositTo] = useState<BigNumber | string>();
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setDepositAmount(e.currentTarget.value);
     };
@@ -39,12 +39,12 @@ const DepositModal = memo(
     useEffect(() => {
       if (Number(depositAmount) > 0) {
         const depositAmountFormated = ethers.utils.parseUnits(
-          depositAmount,
+          depositAmount?.toString(),
           decimals
         );
-        setDepositTo(depositAmountFormated.toString());
+        setDepositTo(depositAmountFormated);
       } else {
-        const depositAmountFormated = "0";
+        const depositAmountFormated = ethers.utils.parseUnits("0", 0);
         setDepositTo(depositAmountFormated);
       }
     }, [depositAmount]);

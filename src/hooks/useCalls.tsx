@@ -26,7 +26,7 @@ export function useAllowance(
       return contractReadAllowance;
     }
   } catch (e) {
-    // console.log(e);
+    console.log(e);
   }
 }
 
