@@ -3,10 +3,7 @@ import { getProvider } from "@wagmi/core";
 import bscUSDT from "@/config/abi/bscUSDT.json";
 import stakeContract from "@/config/abi/stakeContract.json";
 import BigNumber from "bignumber.js";
-import { useContractReads } from 'wagmi'
-
-
-
+import { useContractReads } from "wagmi";
 
 export interface ApprovalResult {
   txHash: string;
@@ -243,7 +240,7 @@ export const checkApprovedBalance = async (
       if (approvedBalance) {
         return approvedBalance;
       }
-      return new BigNumber(0);
+      return ethers.BigNumber.from(0);
     }
   } catch (error) {
     console.error("Failed to check approved balance:", error);

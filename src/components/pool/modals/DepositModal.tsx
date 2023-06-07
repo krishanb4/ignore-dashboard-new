@@ -31,7 +31,9 @@ const DepositModal = memo(
     const [depositAmount, setDepositAmount] = useState<string>("");
     const [depositing, setDepositing] = useState(false);
     const [modalOpenWait, setModalOpenWait] = useState(false);
-    const [depositTo, setDepositTo] = useState<BigNumber | string>();
+    const [depositTo, setDepositTo] = useState<BigNumber | string>(
+      ethers.utils.parseUnits("0", 0)
+    );
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setDepositAmount(e.currentTarget.value);
     };

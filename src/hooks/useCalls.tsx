@@ -13,82 +13,68 @@ export function useAllowance(
   address: `0x${string}` | undefined,
   contractaddress: `0x${string}`
 ) {
-  try {
-    const contractReadAllowance = useContractRead({
-      address: stakingaddress,
-      abi: TokenABI,
-      functionName: "allowance",
-      args: [address, contractaddress],
-      watch: true,
-      cacheTime: 2_000,
-    });
-    if (contractReadAllowance) {
-      return contractReadAllowance;
-    }
-  } catch (e) {
-    console.log(e);
-  }
+  const { data } = useContractRead({
+    address: stakingaddress,
+    abi: TokenABI,
+    functionName: "allowance",
+    args: [address, contractaddress],
+    watch: true,
+    cacheTime: 2_000,
+  });
+  return Number((Number(data) / 10 ** 18).toFixed(2));
 }
 
 export function useStaked(
   address: `0x${string}` | undefined,
   contractaddress: `0x${string}`
 ) {
-  try {
-    const contractReadStakedBalance = useContractRead({
-      address: contractaddress,
-      abi: TokenABI,
-      functionName: "balanceOf",
-      args: [address],
-      watch: true,
-      cacheTime: 2_000,
-    });
-    return contractReadStakedBalance;
-  } catch (e) {}
+  const { data } = useContractRead({
+    address: contractaddress,
+    abi: TokenABI,
+    functionName: "balanceOf",
+    args: [address],
+    watch: true,
+    cacheTime: 2_000,
+  });
+  return Number(data) / 10 ** 18;
 }
 
 export function useEarn(
   address: `0x${string}` | undefined,
   contractaddress: `0x${string}`
 ) {
-  try {
-    const contractReadEarned = useContractRead({
-      address: contractaddress,
-      abi: stakeContract,
-      functionName: "earned",
-      args: [address],
-      watch: true,
-      cacheTime: 2_000,
-    });
-    return contractReadEarned;
-  } catch (e) {}
+  const { data } = useContractRead({
+    address: contractaddress,
+    abi: stakeContract,
+    functionName: "earned",
+    args: [address],
+    watch: true,
+    cacheTime: 2_000,
+  });
+  return Number(data) / 10 ** 18;
 }
 
 export function useSupply(contractaddress: `0x${string}`) {
-  try {
-    const contractReadTotalSupply = useContractRead({
-      address: contractaddress,
-      abi: stakeContract,
-      functionName: "totalSupply",
-      watch: true,
-      cacheTime: 2_000,
-    });
-    return contractReadTotalSupply;
-  } catch (e) {}
+  const { data } = useContractRead({
+    address: contractaddress,
+    abi: stakeContract,
+    functionName: "totalSupply",
+    watch: true,
+    cacheTime: 2_000,
+  });
+  return Number(data) / 10 ** 18;
 }
 
 export function useTokenBalance(
   stakingaddress: `0x${string}`,
   address: `0x${string}` | undefined
 ) {
-  try {
-    const userTokenBalance = useBalance({
-      address: address,
-      token: stakingaddress,
-      watch: true,
-    });
-    return userTokenBalance;
-  } catch (e) {}
+  const { data } = useBalance({
+    address: address,
+    token: stakingaddress,
+    watch: true,
+  });
+  return Number(data?.formatted);
 }
 
 export function useContractConfig(contractaddress: `0x${string}`) {

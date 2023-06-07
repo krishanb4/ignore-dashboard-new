@@ -59,12 +59,27 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
   const { chain } = useNetwork();
   const { chains, pendingChainId, switchNetwork } = useSwitchNetwork();
   const [expandCard, setExpandCard] = useState(false);
-  const [earned, setEarned] = useState(0);
-  const [allowanceFrom, setAllowanceFrom] = useState(0);
-  const [staked, setStaked] = useState(0);
-  const [totalSupply, setTotalSupply] = useState(0);
+  const earned = useEarn(
+    address,
+    getAddress(pool.contractAddress) as `0x${string}`
+  );
+  const allowanceFrom = useAllowance(
+    getAddress(pool.stakingToken) as `0x${string}`,
+    address,
+    getAddress(pool.contractAddress) as `0x${string}`
+  );
+  const staked = useStaked(
+    address,
+    getAddress(pool.contractAddress) as `0x${string}`
+  );
+  const totalSupply = useSupply(
+    getAddress(pool.contractAddress) as `0x${string}`
+  );
   const [tvlInUSD, setTvlInUSD] = useState(0);
-  const [userBalance, setUserBalance] = useState(0);
+  const userBalance = useTokenBalance(
+    getAddress(pool.stakingToken) as `0x${string}`,
+    address
+  );
   const { pancakeswapPrice, pancakeswapLPPrice } = useCharts();
   const [tokienPrice, setTokenPrice] = useState(0);
 
@@ -76,52 +91,6 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
     }
     console.log(pancakeswapLPPrice);
   }, [pancakeswapPrice, pancakeswapLPPrice, pool]);
-
-  const userAlowance = useAllowance(
-    getAddress(pool.stakingToken) as `0x${string}`,
-    address,
-    getAddress(pool.contractAddress) as `0x${string}`
-  );
-
-  const userStaked = useStaked(
-    address,
-    getAddress(pool.contractAddress) as `0x${string}`
-  );
-
-  const userEarn = useEarn(
-    address,
-    getAddress(pool.contractAddress) as `0x${string}`
-  );
-
-  const contractSupply = useSupply(
-    getAddress(pool.contractAddress) as `0x${string}`
-  );
-
-  const userTokenBalance = useTokenBalance(
-    getAddress(pool.stakingToken) as `0x${string}`,
-    address
-  );
-
-  useEffect(() => {
-    const allowanceGet = (Number(userAlowance?.data) / 10 ** 18).toFixed(2);
-    setAllowanceFrom(Number(allowanceGet));
-  }, [userAlowance]);
-
-  useEffect(() => {
-    setStaked(Number(userStaked?.data) / 10 ** 18);
-  }, [userStaked]);
-
-  useEffect(() => {
-    setEarned(Number(userEarn?.data) / 10 ** 18);
-  }, [userEarn]);
-
-  useEffect(() => {
-    setTotalSupply(Number(contractSupply?.data) / 10 ** 18);
-  }, [contractSupply]);
-
-  useEffect(() => {
-    setUserBalance(Number(userTokenBalance?.data?.formatted));
-  }, [userTokenBalance]);
 
   let [someState, setSomeState] = useState(0);
 
@@ -497,7 +466,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
                     </>
                   ) : (
                     <button
-                      onClick={() => HanddleApprove()}
+                      onClick={HanddleApprove}
                       className={`${approving ? "opacity-25" : ""} ${
                         isConnected ? "" : "opacity-25"
                       } bg-gradient-to-br w-[120px] from-green-400 ml-1 to-yellow-300 text-black text-sm  p-3 pl-5 pr-5 rounded-[1rem]`}
@@ -632,7 +601,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
                     </>
                   ) : (
                     <button
-                      onClick={() => HanddleApprove()}
+                      onClick={HanddleApprove}
                       className={`${approving ? "opacity-25" : ""} ${
                         isConnected ? "" : "opacity-25"
                       } bg-gradient-to-br w-[120px] from-green-400 ml-1 to-yellow-300 text-black text-sm  p-3 pl-5 pr-5 rounded-[1rem]`}
