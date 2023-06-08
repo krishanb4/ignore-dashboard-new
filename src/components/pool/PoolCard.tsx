@@ -89,7 +89,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
     } else {
       setTokenPrice(pancakeswapPrice);
     }
-    console.log(pancakeswapLPPrice);
+    // console.log(pancakeswapLPPrice);
   }, [pancakeswapPrice, pancakeswapLPPrice, pool]);
 
   let [someState, setSomeState] = useState(0);

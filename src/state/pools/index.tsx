@@ -17,13 +17,13 @@ export const farmsSlice = createSlice({
         return { ...pool, ...liveFarmData };
       });
     },
-    setPoolsUserData: (state, action) => {
-      const { arrayOfUserDataObjects } = action.payload;
-      arrayOfUserDataObjects.forEach((userDataEl: any) => {
-        const { index } = userDataEl;
-        state.data[index] = { ...state.data[index], userData: userDataEl };
-      });
-    },
+    // setPoolsUserData: (state, action) => {
+    //   const { arrayOfUserDataObjects } = action.payload;
+    //   arrayOfUserDataObjects.forEach((userDataEl: any) => {
+    //     const { index } = userDataEl;
+    //     state.data[index] = { ...state.data[index], userData: userDataEl };
+    //   });
+    // },
   },
 });
 

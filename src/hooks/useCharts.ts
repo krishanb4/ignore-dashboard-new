@@ -1,5 +1,6 @@
 import { use, useEffect, useState } from "react";
 import axios from "axios";
+import useAxios from "./useAxios";
 
 type ChartData = {
   tokenData: number;
@@ -164,19 +165,12 @@ export default function useCharts(): ChartData {
         console.error(error); // handle error
       });
   }, []);
-
+  const { response, loading } = useAxios("coins/ignore-fud/market_chart?vs_currency=usd&days=7");
   useEffect(() => {
-    axios
-      .get("https://api.coingecko.com/api/v3/coins/ignore-fud/market_chart?vs_currency=usd&days=7")
-      .then((response) => {
-        const data = response.data["prices"];
-
-        setPrice(data);
-      })
-      .catch((error) => {
-        console.error(error); // handle error
-      });
-  });
+    if (!loading) {
+      setPrice(response?.prices);
+    }
+  }, [loading, response]);
 
   return {
     tokenData,
