@@ -13,7 +13,10 @@ const PoolCardDetails: React.FC<
   return (
     <div className="flex justify-center col-span-2 space-x-4">
       <span className="px-4 py-2 text-white hidden md:flex col-span-2 justify-center">
-        ${numeral(tvl).format("0.000a")}
+        $
+        {Number(numeral(tvl).format("0.000a")) > 0
+          ? numeral(tvl).format("0.000a")
+          : 0}
       </span>
       <span className="px-4 py-2 text-white hidden md:flex col-span-2 justify-center">
         {displayApr}%

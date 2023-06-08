@@ -74,6 +74,7 @@ export function useTokenBalance(
     token: stakingaddress,
     watch: true,
   });
+
   return Number(data?.formatted);
 }
 
