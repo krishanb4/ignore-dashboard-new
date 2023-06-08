@@ -62,7 +62,7 @@ const Header: React.FC = () => {
                   </button> */}
                 </div>
                 <div data-headlessui-state="">
-                  <Web3Button icon="hide" />
+                  <Web3Button icon="hide" balance="show" />
                 </div>
               </div>
             </div>

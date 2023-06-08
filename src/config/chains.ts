@@ -33,7 +33,7 @@ export const chainlist = {
     nativeCurrency: {
       decimals: 18,
       name: "BSC Chain",
-      symbol: "BSC",
+      symbol: "BNB",
     },
     rpcUrls: {
       public: { http: ["https://bsc-dataseed1.binance.org/"] },

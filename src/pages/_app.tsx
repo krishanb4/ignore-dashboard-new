@@ -54,7 +54,11 @@ export default function App({ Component, pageProps }: AppProps) {
         </WagmiConfig>
         <Web3Modal
           projectId={projectId}
+          enableAccountView={true}
           ethereumClient={ethereumClient}
+          enableNetworkView={true}
+          defaultChain={bsc}
+          themeMode="dark"
           themeVariables={{
             "--w3m-accent-color": "#115657",
             "--w3m-logo-image-url": "/images/logo_name.png",
