@@ -41,7 +41,7 @@ const pools: PoolConfig[] = [
     poolCategory: PoolCategory["NO_LOCK"],
     harvest: true,
     sortOrder: 1,
-    isFinished: false,
+    isFinished: true,
     buyURL: `https://pancakeswap.finance/swap?chain=bsc&outputCurrency=0x61B83eDF87Ea662C695439A807c386455c9E797C`,
   },
   {

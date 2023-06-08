@@ -451,6 +451,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
                         poolId={pool.poolId}
                         name={pool.name}
                         userBalance={userBalance}
+                        endedpool={pool.isFinished}
                       />
                       {staked > 0 ? (
                         <WithdrawtModal
@@ -586,6 +587,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
                         poolId={pool.poolId}
                         name={pool.name}
                         userBalance={userBalance}
+                        endedpool={pool.isFinished}
                       />
                       {staked > 0 ? (
                         <WithdrawtModal

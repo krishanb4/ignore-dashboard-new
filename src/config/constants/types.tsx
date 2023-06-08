@@ -29,7 +29,7 @@ export interface PoolConfig {
   sortOrder?: number;
   harvest?: boolean;
   isLp: boolean;
-  isFinished?: boolean;
+  isFinished: boolean;
   enableEmergencyWithdraw?: boolean;
   buyURL: string;
 }
