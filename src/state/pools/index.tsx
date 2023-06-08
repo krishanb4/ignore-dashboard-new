@@ -54,6 +54,6 @@ export const fetchPoolsUserDataAsync =
     // dispatch(setPoolsUserData({ arrayOfUserDataObjects }));
   };
 
-export const { setPoolsPublicData, setPoolsUserData } = farmsSlice.actions;
+export const { setPoolsPublicData } = farmsSlice.actions;
 
 export default farmsSlice.reducer;
