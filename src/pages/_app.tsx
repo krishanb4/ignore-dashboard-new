@@ -19,7 +19,7 @@ import { mainnet, bsc } from "wagmi/chains";
 
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID!;
 const { chains, provider } = configureChains(
-  [bsc],
+  [chainlist.bscChain],
   [w3mProvider({ projectId })]
 );
 

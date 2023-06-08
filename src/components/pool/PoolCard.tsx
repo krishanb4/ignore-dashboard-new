@@ -443,7 +443,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
             <div className="col-1">
               <div className="text-[#669ca0]">APR%</div>
               <div className="text-white md:text-[3rem] text-[2rem]">
-                {Number(aprValue).toFixed(2)}%
+                {numeral(Number(aprValue).toFixed(2)).format("0.0a")}%
               </div>
             </div>
             <div className="col-1">
