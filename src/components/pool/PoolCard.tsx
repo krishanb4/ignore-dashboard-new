@@ -22,8 +22,6 @@ import {
 import { getAddress } from "@/utils/addressHelpers";
 import TokenABI from "@/config/abi/bscUSDT.json";
 import stakeContract from "@/config/abi/stakeContract.json";
-//import DepositModal from "./modals/DepositModal";
-//import WithdrawtModal from "./modals/WithdrawModal";
 import Link from "next/link";
 import CountdownTimer from "../CountDown";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
@@ -38,6 +36,7 @@ import {
   useAllowance,
   useContracts,
   useEarn,
+  useRewardRate,
   useStaked,
   useSupply,
   useTokenBalance,
@@ -72,7 +71,10 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
     address,
     getAddress(pool.contractAddress) as `0x${string}`
   );
-  // console.log(staked);
+
+  const rewardRate = useRewardRate(
+    getAddress(pool.contractAddress) as `0x${string}`
+  );
 
   const totalSupply = useSupply(
     getAddress(pool.contractAddress) as `0x${string}`
@@ -189,6 +191,22 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
     setClaiming(true);
     contractCall.write?.();
   };
+
+  const [aprValue, setAprValue] = useState(0);
+
+  useEffect(() => {
+    if (pool.isLp) {
+      const apr =
+        (rewardRate * pancakeswapPrice * (3 * 365 * 2880 * 100)) /
+        pancakeswapLPPrice;
+      setAprValue(apr);
+    } else {
+      const apr =
+        (rewardRate * pancakeswapPrice * (3 * 365 * 2880 * 100)) /
+        pancakeswapPrice;
+      setAprValue(apr);
+    }
+  });
 
   let claimButton;
   if (claiming) {
@@ -309,7 +327,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
           <PoolCardDetails
             earn={earned}
             tvl={totalSupply * tokienPrice}
-            displayApr={pool.apr}
+            displayApr={aprValue}
           />
 
           {chain?.id === 56 ? (
@@ -373,7 +391,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
                 ${Number(totalSupply * tokienPrice).toFixed(2)}
               </span>
               <span className="px-4 py-2 text-white flex md:hidden  justify-center">
-                {pool.apr}%
+                {Number(aprValue).toFixed(2)}%
               </span>
               <span className="px-4 py-2 text-white flex md:hidden justify-center">
                 {earned > 0 ? earned.toFixed(3) : 0}
@@ -425,7 +443,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
             <div className="col-1">
               <div className="text-[#669ca0]">APR%</div>
               <div className="text-white md:text-[3rem] text-[2rem]">
-                {pool.apr}%
+                {Number(aprValue).toFixed(2)}%
               </div>
             </div>
             <div className="col-1">

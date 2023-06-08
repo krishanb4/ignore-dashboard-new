@@ -87,6 +87,17 @@ export function useContractConfig(contractaddress: `0x${string}`) {
   return config;
 }
 
+export function useRewardRate(contractaddress: `0x${string}`) {
+  const { data } = useContractRead({
+    address: contractaddress,
+    abi: stakeContract,
+    functionName: "rewardRate",
+    watch: true,
+    cacheTime: 2_000,
+  });
+  return Number(data) / 10 ** 18;
+}
+
 export function useContracts(contractaddress: `0x${string}`) {
   const config = useContractConfig(contractaddress);
   const { data, isLoading, isSuccess, write, status } = useContractWrite({

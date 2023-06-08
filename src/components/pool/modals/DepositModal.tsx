@@ -129,7 +129,7 @@ const DepositModal = ({
   }, [transaction]);
 
   const handleDeposit = () => {
-    console.log("here");
+    // console.log("here");
     setDepositing(true);
     write?.();
   };
