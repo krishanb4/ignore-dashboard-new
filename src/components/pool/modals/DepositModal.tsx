@@ -86,7 +86,7 @@ const DepositModal = memo(
         toast.success("Transaction successfully sent 👌");
       },
     });
-    console.log(data);
+   // console.log(data);
 
     const transaction = useWaitForTransaction({
       hash: data?.hash,

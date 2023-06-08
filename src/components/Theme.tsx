@@ -72,7 +72,7 @@ function Theme() {
     darkQuery.removeEventListener("change", onChange);
     darkQuery.addEventListener("change", onChange);
   }
-  console.log(theme);
+  //console.log(theme);
 
   return (
     <>

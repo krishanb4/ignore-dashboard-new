@@ -72,7 +72,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
     address,
     getAddress(pool.contractAddress) as `0x${string}`
   );
-  console.log(staked);
+  // console.log(staked);
 
   const totalSupply = useSupply(
     getAddress(pool.contractAddress) as `0x${string}`
@@ -177,7 +177,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
 
   useEffect(() => {
     if (transaction?.status === "success") {
-      console.log(transaction);
+      // console.log(transaction);
 
       setClaiming(false);
     }
@@ -411,9 +411,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
             <div className="col-1">
               <div className="text-[#669ca0]">Your deposit</div>
               <div className="text-white md:text-[3rem] text-[2rem]">
-                {staked > 0 && Number(numeral(staked).format("0.0a")) > 0
-                  ? numeral(staked).format("0.0a")
-                  : 0}
+                {staked > 0 ? numeral(staked).format("0.0a") : 0}
                 <span className="text-sm grid">
                   ($
                   {staked > 0 &&

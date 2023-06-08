@@ -99,7 +99,7 @@ export function useTransaction(hash: `0x${string}` | undefined) {
   const transaction = useWaitForTransaction({
     hash: hash,
     onSuccess(data) {
-      console.log("Success", data);
+      // console.log("Success", data);
     },
   });
   return transaction;

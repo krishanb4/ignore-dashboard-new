@@ -5,11 +5,24 @@ import Farming from "./Farming";
 
 const SelectButtons: React.FC = () => {
   const [selectedButton, setSelectButton] = useState("Dashboard");
+
   const SelectButton = [
     { name: "Dashboard" },
     { name: "Staking" },
     { name: "Farming" },
   ];
+
+  const handleTabClick = (name: string) => {
+    setSelectButton(name);
+    localStorage.setItem("selectedButton", name);
+  };
+
+  useEffect(() => {
+    const storedButton = localStorage.getItem("selectedButton");
+    if (storedButton) {
+      setSelectButton(storedButton);
+    }
+  }, []);
 
   return (
     <>
@@ -33,7 +46,7 @@ const SelectButtons: React.FC = () => {
                 data-hs-tab="#ctc-component-2-tab-1"
                 aria-controls="ctc-component-2-tab-1"
                 role="tab"
-                onClick={() => setSelectButton(selectButton.name)}
+                onClick={() => handleTabClick(selectButton.name)}
               >
                 {selectButton.name}
               </button>
