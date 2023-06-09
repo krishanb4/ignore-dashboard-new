@@ -19,8 +19,7 @@ const PoolCardDetails: React.FC<
           : 0}
       </span>
       <span className="px-4 py-2 text-white hidden md:flex col-span-2 justify-center">
-        18%
-        {/* {numeral(Number(displayApr).toFixed(2)).format("0.0a")}% */}
+        {numeral(Number(displayApr).toFixed(2)).format("0.0a")}%
       </span>
       <span className="px-4 py-2 text-white hidden md:flex col-span-2 justify-center">
         {earn > 0 ? earn.toFixed(3) : 0}

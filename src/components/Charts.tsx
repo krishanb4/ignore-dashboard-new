@@ -6,12 +6,6 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import useCharts from "@/hooks/useCharts";
 
-const ChartCard = ({ children }: { children: React.ReactNode }) => (
-  <div className="border-2 border-gray-300 rounded-lg m-10 bg-[#f0ffff]">
-    {children}
-  </div>
-);
-
 const ExampleCharts = () => {
   const [isDropDown, setIsDropDown] = useState(false);
   const [selectSwap, setSelectSwap] = useState("Select Swap");
@@ -168,7 +162,7 @@ const ExampleCharts = () => {
       name: "token-price",
       data: price?.map((prices: any) => {
         const price4 = prices[1];
-        return price4.toFixed(6);
+        return price4.toFixed(5);
       }),
     },
   ];
@@ -255,7 +249,10 @@ const ExampleCharts = () => {
                 </SkeletonTheme>
               ) : (
                 <p className="leading-relaxed text-base text-black dark:text-white">
-                  $539.05K
+                  $
+                  {numeral(pancakeSwapTotalLP + archerswapTotalLP)
+                    .format("0.000a")
+                    .toUpperCase()}
                 </p>
               )}
             </div>
