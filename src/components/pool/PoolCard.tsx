@@ -470,7 +470,9 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
             <div className="col-1">
               <div className="text-[#669ca0]">Earning</div>
               <div className="text-green-400 md:text-[3rem] text-[2rem] text-gradient-to-b">
-                {earned > 0 ? earned.toFixed(3) : 0}
+                {earned > 0
+                  ? numeral(Number(earned)).format("0.000a").toUpperCase()
+                  : 0}
               </div>
               <span className="text-sm text-white">4TOKEN</span>
             </div>
