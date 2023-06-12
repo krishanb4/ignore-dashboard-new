@@ -42,7 +42,7 @@ const pools: PoolConfig[] = [
     poolCategory: PoolCategory["NO_LOCK"],
     harvest: true,
     sortOrder: 1,
-    factor: 0.0025,
+    factor: 0.0005,
     isFinished: false,
     buyURL: `https://pancakeswap.finance/swap?chain=bsc&outputCurrency=0x61B83eDF87Ea662C695439A807c386455c9E797C`,
   },
@@ -64,7 +64,7 @@ const pools: PoolConfig[] = [
     poolCategory: PoolCategory["15D_LOCK"],
     harvest: true,
     sortOrder: 1,
-    factor: 0.018,
+    factor: 0.0025,
     isFinished: false,
     buyURL: `https://pancakeswap.finance/swap?chain=bsc&outputCurrency=0x61B83eDF87Ea662C695439A807c386455c9E797C`,
   },
@@ -86,10 +86,12 @@ const pools: PoolConfig[] = [
     poolCategory: PoolCategory["1Y_LOCK"],
     harvest: true,
     sortOrder: 1,
-    factor: 0.017,
+    factor: 0.0025,
     isFinished: false,
     buyURL: `https://pancakeswap.finance/swap?chain=bsc&outputCurrency=0x61B83eDF87Ea662C695439A807c386455c9E797C`,
   },
 ];
 
 export default pools;
+
+// Path: src/config/constants/tokens.tsx
