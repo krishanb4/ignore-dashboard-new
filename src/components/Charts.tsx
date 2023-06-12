@@ -214,7 +214,9 @@ const ExampleCharts = () => {
                 <ul>
                   <li>
                     Current Supply :{" "}
-                    {numeral(tokenData).format("0.000a").toUpperCase()}
+                    {numeral(40000000000 - (tokenBurnData + tokenBurnDataAuto))
+                      .format("0.000a")
+                      .toUpperCase()}
                   </li>
                   <li>
                     Price : $
