@@ -81,6 +81,8 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
     getAddress(pool.contractAddress) as `0x${string}`
   );
 
+  console.log("totalSupply", totalSupply);
+
   const periodPenalty = usePanelty(
     getAddress(pool.contractAddress) as `0x${string}`
   );
@@ -224,7 +226,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
         pancakeswapPrice;
       setAprValue(apr);
     }
-  });
+  }, [pancakeswapLPPrice, pancakeswapPrice, pool, rewardRate]);
 
   let claimButton;
   if (claiming) {
@@ -344,7 +346,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
 
           <PoolCardDetails
             earn={earned}
-            tvl={totalSupply * tokienPrice}
+            tvl={totalSupply * Number(tokienPrice)}
             displayApr={aprValue}
           />
 
@@ -447,7 +449,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
             <div className="col-1">
               <div className="text-[#669ca0]">Your deposit</div>
               <div className="text-white md:text-[3rem] text-[2rem]">
-                {staked > 0 ? numeral(staked).format("0.00a") : 0}
+                {staked > 0 ? numeral(staked).format("0.00a").toUpperCase() : 0}
                 <span className="text-sm grid">
                   ($
                   {staked > 0 &&

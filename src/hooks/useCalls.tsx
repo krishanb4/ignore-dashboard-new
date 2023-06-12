@@ -87,6 +87,7 @@ export function useTokenBalance(
     address: address,
     token: stakingaddress,
     watch: true,
+    cacheTime: 2_000,
   });
 
   return Number(data?.value) / 10 ** 18;
@@ -97,6 +98,7 @@ export function useContractConfig(contractaddress: `0x${string}`) {
     address: contractaddress,
     abi: stakeContract,
     functionName: "getReward",
+    cacheTime: 2_000,
   });
   return config;
 }
