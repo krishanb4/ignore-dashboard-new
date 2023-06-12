@@ -37,7 +37,7 @@ export const chainlist = {
     },
     rpcUrls: {
       public: { http: ["https://bsc-dataseed1.binance.org", "https://endpoints.omniatech.io/v1/bsc/mainnet/public", "https://bsc-mainnet.gateway.pokt.network/v1/lb/6136201a7bad1500343e248d"] },
-      default: { http: ["https://bsc.meowrpc.com"] },
+      default: { http: ["https://bsc-dataseed1.binance.org/"] },
     },
     blockExplorers: {
       etherscan: { name: "BscScan", url: "https://bscscan.com" },

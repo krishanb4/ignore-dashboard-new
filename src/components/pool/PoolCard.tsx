@@ -71,9 +71,11 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
   );
   const allowanceFrom = useAllowance(
     getAddress(pool.stakingToken) as `0x${string}`,
-    address,
+    address as `0x${string}`,
     getAddress(pool.contractAddress) as `0x${string}`
   );
+  console.log(allowanceFrom);
+
   const staked = useStaked(
     address,
     getAddress(pool.contractAddress) as `0x${string}`

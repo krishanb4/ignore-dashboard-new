@@ -20,9 +20,11 @@ export function useAllowance(
     functionName: "allowance",
     args: [address, contractaddress],
     watch: true,
-    cacheTime: 2_000,
   });
-  return Number((Number(data) / 10 ** 18).toFixed(2));
+
+  console.log(Number(data));
+
+  return Number(data) / 10 ** 18;
 }
 
 export function useStaked(
