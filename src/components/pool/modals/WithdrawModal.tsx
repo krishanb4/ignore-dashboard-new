@@ -22,10 +22,18 @@ interface DepositModalProps {
   userBalance: number;
   contract: Address;
   locked: boolean;
+  isGrater: boolean;
 }
 
 const WithdrawtModal = memo(
-  ({ poolId, name, userBalance, contract, locked }: DepositModalProps) => {
+  ({
+    poolId,
+    name,
+    userBalance,
+    contract,
+    locked,
+    isGrater,
+  }: DepositModalProps) => {
     const { chain } = useNetwork();
     const { chains, pendingChainId, switchNetwork } = useSwitchNetwork();
     const [modalOpen, setModalOpen] = useState(false);
@@ -39,7 +47,7 @@ const WithdrawtModal = memo(
     const handleChange = useCallback(
       (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        const regex = /^[0-9]*$/;
+        const regex = /^\d*\.?\d*$/;
         if (value === "" || regex.test(value)) {
           setDepositAmount(value);
         }
@@ -203,7 +211,7 @@ const WithdrawtModal = memo(
         {chain?.id === 56 ? (
           <button
             onClick={
-              locked
+              locked && !isGrater
                 ? () => setModalOpenDisclaimer(true)
                 : () => setModalOpen(true)
             }

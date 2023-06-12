@@ -36,6 +36,7 @@ import {
   useAllowance,
   useContracts,
   useEarn,
+  usePanelty,
   useRewardRate,
   useStaked,
   useSupply,
@@ -79,6 +80,23 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
   const totalSupply = useSupply(
     getAddress(pool.contractAddress) as `0x${string}`
   );
+
+  const periodPenalty = usePanelty(
+    getAddress(pool.contractAddress) as `0x${string}`
+  );
+
+  const isUnixTimeGreaterThanNow = (givenTime: number) => {
+    const currentTime = Date.now(); // Current Unix time in milliseconds
+    return givenTime > currentTime;
+  };
+
+  const [isGreater, setIsGreater] = useState(false);
+
+  useEffect(() => {
+    const givenTime = new Date(periodPenalty).getTime(); // Replace with your given time
+    setIsGreater(isUnixTimeGreaterThanNow(givenTime));
+  }, [periodPenalty]);
+
   const [tvlInUSD, setTvlInUSD] = useState(0);
   const userBalance = useTokenBalance(
     getAddress(pool.stakingToken) as `0x${string}`,
@@ -285,7 +303,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
         </div>
       </button>
     );
-  } else if (earned > 0) {
+  } else if (earned > 0.001) {
     claimButton = (
       <button
         onClick={HanddleClaim}
@@ -403,7 +421,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
           {countdown ? (
             <div className="relative ml-[40px] flex text-white justify-start">
               Ends in: {countdown}
-              {pool.locked ? (
+              {pool.locked && !isGreater ? (
                 <span className=" text-[#ff4343] top-0 right-0 ml-[30px]">
                   Early unstaking will cost you 4% penalty
                 </span>
@@ -429,7 +447,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
             <div className="col-1">
               <div className="text-[#669ca0]">Your deposit</div>
               <div className="text-white md:text-[3rem] text-[2rem]">
-                {staked > 0 ? numeral(staked).format("0.0a") : 0}
+                {staked > 0 ? numeral(staked).format("0.00a") : 0}
                 <span className="text-sm grid">
                   ($
                   {staked > 0 &&
@@ -478,6 +496,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
                           name={pool.name}
                           userBalance={staked}
                           locked={pool.locked}
+                          isGrater={isGreater}
                         />
                       ) : (
                         ""
@@ -614,6 +633,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
                           name={pool.name}
                           userBalance={staked}
                           locked={pool.locked}
+                          isGrater={isGreater}
                         />
                       ) : (
                         ""

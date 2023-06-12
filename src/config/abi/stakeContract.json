@@ -97,6 +97,32 @@
     {
         "constant": true,
         "inputs": [],
+        "name": "DeadWallet",
+        "outputs": [{
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+        }],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "LOCK_DURATION",
+        "outputs": [{
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+        }],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
         "name": "LPToken",
         "outputs": [{
             "internalType": "address",
@@ -241,6 +267,19 @@
         "constant": true,
         "inputs": [],
         "name": "periodFinish",
+        "outputs": [{
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+        }],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "periodPenalty",
         "outputs": [{
             "internalType": "uint256",
             "name": "",

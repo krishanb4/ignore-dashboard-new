@@ -14,7 +14,7 @@ const pools: PoolConfig[] = [
       56: "0x61B83eDF87Ea662C695439A807c386455c9E797C",
     },
     contractAddress: {
-      56: "0xc66A9469fA4F5F9AC70484AC7748652fE75006F7",
+      56: "0x640451baEa0BabDE2f3636FFCAfC0B7318e986d9",
     },
     isLp: true,
     poolCategory: PoolCategory.NO_LOCK,
@@ -35,13 +35,13 @@ const pools: PoolConfig[] = [
       56: "0x61B83eDF87Ea662C695439A807c386455c9E797C",
     },
     contractAddress: {
-      56: "0x0A971eBC2332D803285c04AC9D0d80Af9009D4B8",
+      56: "0xdeb4fAF9E3d8092aFEdc4B25f2a3d5e61Aa32Dd8",
     },
     isLp: false,
     poolCategory: PoolCategory["NO_LOCK"],
     harvest: true,
     sortOrder: 1,
-    isFinished: true,
+    isFinished: false,
     buyURL: `https://pancakeswap.finance/swap?chain=bsc&outputCurrency=0x61B83eDF87Ea662C695439A807c386455c9E797C`,
   },
   {
@@ -56,7 +56,7 @@ const pools: PoolConfig[] = [
       56: "0x61B83eDF87Ea662C695439A807c386455c9E797C",
     },
     contractAddress: {
-      56: "0xfFC7e61a86EDc649faA693d60157485be4aD87Ce",
+      56: "0xf298dBeCe9C82548869545Fa219668AFE523AF02",
     },
     isLp: false,
     poolCategory: PoolCategory["15D_LOCK"],
@@ -77,7 +77,7 @@ const pools: PoolConfig[] = [
       56: "0x61B83eDF87Ea662C695439A807c386455c9E797C",
     },
     contractAddress: {
-      56: "0x3700b8D3b3A5f25959DA8fB9444133dB5594950c",
+      56: "0x6bDEd208a93226ed57115d65718b7586EFd8Ea1c",
     },
     isLp: false,
     poolCategory: PoolCategory["1Y_LOCK"],

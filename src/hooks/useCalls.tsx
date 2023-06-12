@@ -1,6 +1,7 @@
 import {
   useBalance,
   useContractRead,
+  useContractReads,
   useContractWrite,
   usePrepareContractWrite,
   useWaitForTransaction,
@@ -30,12 +31,13 @@ export function useStaked(
 ) {
   const { data } = useContractRead({
     address: contractaddress,
-    abi: TokenABI,
+    abi: stakeContract,
     functionName: "balanceOf",
     args: [address],
     watch: true,
     cacheTime: 2_000,
   });
+
   return Number(data) / 10 ** 18;
 }
 
@@ -65,6 +67,18 @@ export function useSupply(contractaddress: `0x${string}`) {
   return Number(data) / 10 ** 18;
 }
 
+export function usePanelty(contractaddress: `0x${string}`) {
+  const { data } = useContractRead({
+    address: contractaddress,
+    abi: stakeContract,
+    functionName: "periodPenalty",
+    watch: true,
+    cacheTime: 2_000,
+  });
+
+  return Number(data);
+}
+
 export function useTokenBalance(
   stakingaddress: `0x${string}`,
   address: `0x${string}` | undefined
@@ -75,7 +89,7 @@ export function useTokenBalance(
     watch: true,
   });
 
-  return Number(data?.formatted);
+  return Number(data?.value) / 10 ** 18;
 }
 
 export function useContractConfig(contractaddress: `0x${string}`) {

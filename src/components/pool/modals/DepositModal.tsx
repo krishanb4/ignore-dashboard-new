@@ -41,9 +41,16 @@ const DepositModal = ({
     ethers.utils.parseUnits("0", 0)
   );
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDepositAmount(e.currentTarget.value);
-  };
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      const regex = /^\d*\.?\d*$/;
+      if (value === "" || regex.test(value)) {
+        setDepositAmount(value);
+      }
+    },
+    [setDepositAmount]
+  );
 
   const decimals = 18;
   useEffect(() => {

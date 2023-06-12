@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Charts from "./Charts";
 import StakingCards from "./StakingCard";
 import Farming from "./Farming";
+import CountdownTimer from "./CountDownTimer";
 
 const SelectButtons: React.FC = () => {
   const [selectedButton, setSelectButton] = useState("Dashboard");
@@ -54,10 +55,14 @@ const SelectButtons: React.FC = () => {
           </nav>
         </div>
       </div>
+
       {selectedButton == "Dashboard" ? (
         <Charts />
       ) : selectedButton == "Staking" ? (
-        <StakingCards />
+        <>
+          <CountdownTimer />
+          {/* <StakingCards /> */}
+        </>
       ) : (
         <Farming />
       )}
