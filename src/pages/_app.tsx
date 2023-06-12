@@ -18,6 +18,7 @@ import { MyContext } from "@/components/context";
 import { mainnet, bsc } from "wagmi/chains";
 
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID!;
+
 const { chains, provider } = configureChains(
   [chainlist.bscChain],
   [w3mProvider({ projectId })]
