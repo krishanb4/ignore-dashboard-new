@@ -81,8 +81,6 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
     getAddress(pool.contractAddress) as `0x${string}`
   );
 
-  console.log("totalSupply", totalSupply);
-
   const periodPenalty = usePanelty(
     getAddress(pool.contractAddress) as `0x${string}`
   );
@@ -216,17 +214,21 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
 
   useEffect(() => {
     if (pool.isLp) {
+      console.log("reward rate", rewardRate);
+
       const apr =
         (rewardRate * pancakeswapPrice * (3 * 365 * 2880 * 100)) /
         pancakeswapLPPrice;
       setAprValue(apr);
+      console.log(apr);
     } else {
       const apr =
         (rewardRate * pancakeswapPrice * (3 * 365 * 2880 * 100)) /
         pancakeswapPrice;
       setAprValue(apr);
+      console.log(apr);
     }
-  }, [pancakeswapLPPrice, pancakeswapPrice, pool, rewardRate]);
+  }, [pancakeswapLPPrice, pancakeswapPrice, rewardRate]);
 
   let claimButton;
   if (claiming) {
@@ -411,7 +413,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
                 ${Number(totalSupply * tokienPrice).toFixed(2)}
               </span>
               <span className="px-4 py-2 text-white flex md:hidden  justify-center">
-                {Number(aprValue).toFixed(2)}%
+                {numeral(Number(aprValue)).format("0.00a").toUpperCase()}%
               </span>
               <span className="px-4 py-2 text-white flex md:hidden justify-center">
                 {earned > 0 ? earned.toFixed(3) : 0}
@@ -463,7 +465,10 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
             <div className="col-1">
               <div className="text-[#669ca0]">APR%</div>
               <div className="text-white md:text-[3rem] text-[2rem]">
-                {numeral(Number(aprValue).toFixed(2)).format("0.0a")}%
+                {numeral(Number(aprValue).toFixed(2))
+                  .format("0.0a")
+                  .toUpperCase()}
+                %
               </div>
             </div>
             <div className="col-1">

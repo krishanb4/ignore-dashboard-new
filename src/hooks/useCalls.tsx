@@ -107,7 +107,7 @@ export function useRewardRate(contractaddress: `0x${string}`) {
   const { data } = useContractRead({
     address: contractaddress,
     abi: stakeContract,
-    functionName: "rewardRate",
+    functionName: "rewardPerToken",
     watch: true,
     cacheTime: 2_000,
   });
