@@ -60,8 +60,8 @@ const SelectButtons: React.FC = () => {
         <Charts />
       ) : selectedButton == "Staking" ? (
         <>
-          <CountdownTimer />
-          {/* <StakingCards /> */}
+          {/* <CountdownTimer /> */}
+          <StakingCards />
         </>
       ) : (
         <Farming />
