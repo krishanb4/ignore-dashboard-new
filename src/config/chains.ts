@@ -36,8 +36,8 @@ export const chainlist = {
       symbol: "BNB",
     },
     rpcUrls: {
-      public: { http: ["https://bsc-dataseed1.binance.org/"] },
-      default: { http: ["https://rpc.coredao.org"] },
+      public: { http: ["https://bsc-dataseed1.binance.org/", "https://endpoints.omniatech.io/v1/bsc/mainnet/public", "https://bsc-mainnet.gateway.pokt.network/v1/lb/6136201a7bad1500343e248d"] },
+      default: { http: ["https://bsc.meowrpc.com"] },
     },
     blockExplorers: {
       etherscan: { name: "BscScan", url: "https://bscscan.com" },

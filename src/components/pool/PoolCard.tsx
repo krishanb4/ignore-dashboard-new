@@ -228,7 +228,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
       setAprValue(apr);
       console.log(apr);
     }
-  }, [pancakeswapLPPrice, pancakeswapPrice, rewardRate]);
+  }, [pancakeswapLPPrice, pancakeswapPrice, rewardRate, pool]);
 
   let claimButton;
   if (claiming) {
