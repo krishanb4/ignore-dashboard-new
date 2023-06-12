@@ -11,6 +11,7 @@ import dynamic from "next/dynamic";
 import {
   useAccount,
   useBalance,
+  useConnect,
   useContractRead,
   useContractWrite,
   useNetwork,
@@ -19,6 +20,8 @@ import {
   useSwitchNetwork,
   useWaitForTransaction,
 } from "wagmi";
+import { InjectedConnector } from "wagmi/connectors/injected";
+
 import { getAddress } from "@/utils/addressHelpers";
 import TokenABI from "@/config/abi/bscUSDT.json";
 import stakeContract from "@/config/abi/stakeContract.json";
@@ -55,6 +58,9 @@ interface PoolCardProps {
 const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
   pool,
 }) => {
+  const { connect } = useConnect({
+    connector: new InjectedConnector(),
+  });
   const { address, isConnecting, isDisconnected, isConnected } = useAccount();
   const { chain } = useNetwork();
   const { chains, pendingChainId, switchNetwork } = useSwitchNetwork();
@@ -358,7 +364,10 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
               Wrong Network
             </button>
           ) : (
-            <button className="bg-gradient-to-br from-red-400 to-red-300 text-white text-sm pt-0 pl-5 pr-5 rounded-[1rem]">
+            <button
+              onClick={() => connect()}
+              className="bg-gradient-to-br from-red-400 to-red-300 text-white text-sm pt-0 pl-5 pr-5 rounded-[1rem]"
+            >
               Connect Wallet
             </button>
           )}
@@ -406,7 +415,10 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
             </div>
             <div className="grid grid-cols-3 justify-center space-x-4">
               <span className="px-4 py-2 text-white flex md:hidden  justify-center">
-                ${Number(totalSupply * tokienPrice).toFixed(2)}
+                $
+                {numeral(Number(totalSupply * tokienPrice))
+                  .format("0.00a")
+                  .toUpperCase()}
               </span>
               <span className="px-4 py-2 text-white flex md:hidden  justify-center">
                 {numeral(Number(aprValue)).format("0.00a").toUpperCase()}%
