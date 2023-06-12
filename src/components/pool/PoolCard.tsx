@@ -215,12 +215,12 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
   useEffect(() => {
     if (pool.isLp) {
       const apr =
-        (rewardRate * pancakeswapPrice * (3 * 365 * 2880 * 100)) /
+        (rewardRate * pancakeswapPrice * pool.factor * (3 * 365 * 2880 * 100)) /
         pancakeswapLPPrice;
       setAprValue(apr);
     } else {
       const apr =
-        (rewardRate * pancakeswapPrice * (3 * 365 * 2880 * 100)) /
+        (rewardRate * pancakeswapPrice * pool.factor * (3 * 365 * 2880 * 100)) /
         pancakeswapPrice;
       setAprValue(apr);
     }

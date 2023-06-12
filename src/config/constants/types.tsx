@@ -32,4 +32,5 @@ export interface PoolConfig {
   isFinished: boolean;
   enableEmergencyWithdraw?: boolean;
   buyURL: string;
+  factor: number;
 }
