@@ -36,7 +36,7 @@ export const chainlist = {
       symbol: "BNB",
     },
     rpcUrls: {
-      public: { http: ["https://bsc-dataseed1.binance.org/", "https://endpoints.omniatech.io/v1/bsc/mainnet/public", "https://bsc-mainnet.gateway.pokt.network/v1/lb/6136201a7bad1500343e248d"] },
+      public: { http: ["https://bsc-dataseed1.binance.org", "https://endpoints.omniatech.io/v1/bsc/mainnet/public", "https://bsc-mainnet.gateway.pokt.network/v1/lb/6136201a7bad1500343e248d"] },
       default: { http: ["https://bsc.meowrpc.com"] },
     },
     blockExplorers: {
@@ -49,5 +49,5 @@ export const chainlist = {
       //   blockCreated: 11_907_934,
       // },
     },
-  } as const,
+  } as const satisfies Chain,
 } as { [key: string]: Chain };
