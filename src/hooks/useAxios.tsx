@@ -33,7 +33,7 @@ const useAxios = <T extends ApiResponse>(
   };
 
   useEffect(() => {
-    fetchData(param).catch((err) => console.log(err));
+    fetchData(param).catch((err) => console.log("some"));
   }, [param]);
 
   return {

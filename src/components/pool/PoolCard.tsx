@@ -74,7 +74,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
     address as `0x${string}`,
     getAddress(pool.contractAddress) as `0x${string}`
   );
-  console.log(allowanceFrom);
+ // console.log(allowanceFrom);
 
   const staked = useStaked(
     address,

@@ -22,7 +22,7 @@ export function useAllowance(
     watch: true,
   });
 
-  console.log(Number(data));
+  // console.log(Number(data));
 
   return Number(data) / 10 ** 18;
 }

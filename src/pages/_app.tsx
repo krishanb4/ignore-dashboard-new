@@ -16,12 +16,13 @@ import { useEffect, useState } from "react";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { MyContext } from "@/components/context";
 import { mainnet, bsc } from "wagmi/chains";
+import { publicProvider } from "@wagmi/core/providers/public";
 
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID!;
 
 const { chains, provider } = configureChains(
   [chainlist.bscChain],
-  [w3mProvider({ projectId })]
+  [publicProvider()]
 );
 
 const wagmiClient = createClient({
