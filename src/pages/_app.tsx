@@ -21,7 +21,7 @@ import { publicProvider } from "@wagmi/core/providers/public";
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID!;
 
 const { chains, provider } = configureChains(
-  [chainlist.bscChain],
+  [chainlist.bscChain, chainlist.coreDAO],
   [publicProvider()]
 );
 
@@ -39,20 +39,12 @@ interface MyContextValue {
 }
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [data, setData] = useState("");
-
-  const contextValue: MyContextValue = {
-    data,
-    setData,
-  };
   return (
     <>
       <Provider store={store}>
         <WagmiConfig client={wagmiClient}>
-          <MyContext.Provider value={contextValue}>
-            <Component {...pageProps} />
-            <ToastContainer />
-          </MyContext.Provider>
+          <Component {...pageProps} />
+          <ToastContainer />
         </WagmiConfig>
         <Web3Modal
           projectId={projectId}
@@ -61,6 +53,12 @@ export default function App({ Component, pageProps }: AppProps) {
           enableNetworkView={true}
           defaultChain={bsc}
           themeMode="dark"
+          chainImages={{
+            1116: "/images/coredao.png",
+          }}
+          tokenImages={{
+            CORE: "/images/coredao.png",
+          }}
           themeVariables={{
             "--w3m-accent-color": "#115657",
             "--w3m-logo-image-url": "/images/logo_name.png",

@@ -1,6 +1,14 @@
 export interface Address {
-  97?: string;
+  1116?: string;
   56: string;
+}
+
+export interface Urls {
+  [key: number]: string;
+}
+
+export interface Addresses {
+  [chainId: number]: `0x${string}`;
 }
 
 export interface Token {
@@ -22,15 +30,15 @@ export interface PoolConfig {
   name: string;
   token: Token;
   locked: boolean;
-  earningToken: Address;
-  stakingToken: Address;
-  contractAddress: Address;
+  earningToken: Addresses;
+  stakingToken: Addresses;
+  contractAddress: Addresses;
   poolCategory: PoolCategory;
   sortOrder?: number;
   harvest?: boolean;
   isLp: boolean;
   isFinished: boolean;
   enableEmergencyWithdraw?: boolean;
-  buyURL: string;
+  buyURL: Urls;
   factor: number;
 }

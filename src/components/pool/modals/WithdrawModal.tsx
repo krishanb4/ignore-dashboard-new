@@ -16,11 +16,14 @@ import { toast } from "react-toastify";
 import { ethers, BigNumber } from "ethers";
 import React, { memo } from "react";
 
+export interface Addresses {
+  [chainId: number]: `0x${string}`;
+}
 interface DepositModalProps {
   poolId: number;
   name: any;
   userBalance: number;
-  contract: Address;
+  contract: Addresses;
   locked: boolean;
   isGrater: boolean;
 }
@@ -74,7 +77,7 @@ const WithdrawtModal = memo(
       },
     };
     const { config, error } = usePrepareContractWrite({
-      address: getAddress(contract) as `0x${string}`,
+      address: getAddress(contract, chain?.id) as `0x${string}`,
       abi: stakeContract,
       functionName: "withdrawAmount",
       args: Object.values(args),

@@ -1,12 +1,20 @@
 import { Address } from "@/config/constants/types";
 import addresses from "@/config/constants/contracts";
 
-export const getAddress = (address: Address): string => {
+export interface Addresses {
+  [chainId: number]: `0x${string}`;
+}
+
+export const getAddress = (address: Addresses, chainId?: number): string => {
   const mainNetChainId = 56;
-  const chainId = 56;
-  return address[chainId] ? address[chainId] : address[mainNetChainId];
+
+  if (chainId !== undefined && address[chainId]) {
+    return address[chainId];
+  } else {
+    return address[mainNetChainId];
+  }
 };
 
-export const getMulticallAddress = () => {
-  return getAddress(addresses.mulltiCall);
-};
+// export const getMulticallAddress = () => {
+//   return getAddress(addresses.mulltiCall);
+// };

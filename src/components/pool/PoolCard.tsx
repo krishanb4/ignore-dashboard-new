@@ -67,30 +67,30 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
   const [expandCard, setExpandCard] = useState(false);
   const earned = useEarn(
     address,
-    getAddress(pool.contractAddress) as `0x${string}`
+    getAddress(pool.contractAddress, chain?.id) as `0x${string}`
   );
   const allowanceFrom = useAllowance(
     getAddress(pool.stakingToken) as `0x${string}`,
     address as `0x${string}`,
     getAddress(pool.contractAddress) as `0x${string}`
   );
- // console.log(allowanceFrom);
+  // console.log(allowanceFrom);
 
   const staked = useStaked(
     address,
-    getAddress(pool.contractAddress) as `0x${string}`
+    getAddress(pool.contractAddress, chain?.id) as `0x${string}`
   );
 
   const rewardRate = useRewardRate(
-    getAddress(pool.contractAddress) as `0x${string}`
+    getAddress(pool.contractAddress, chain?.id) as `0x${string}`
   );
 
   const totalSupply = useSupply(
-    getAddress(pool.contractAddress) as `0x${string}`
+    getAddress(pool.contractAddress, chain?.id) as `0x${string}`
   );
 
   const periodPenalty = usePanelty(
-    getAddress(pool.contractAddress) as `0x${string}`
+    getAddress(pool.contractAddress, chain?.id) as `0x${string}`
   );
 
   const isUnixTimeGreaterThanNow = (givenTime: number) => {
@@ -107,7 +107,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
 
   const [tvlInUSD, setTvlInUSD] = useState(0);
   const userBalance = useTokenBalance(
-    getAddress(pool.stakingToken) as `0x${string}`,
+    getAddress(pool.stakingToken, chain?.id) as `0x${string}`,
     address
   );
   const { pancakeswapPrice, pancakeswapLPPrice } = useCharts();
@@ -124,7 +124,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
   let [someState, setSomeState] = useState(0);
 
   const contractEnd = useContractRead({
-    address: getAddress(pool.contractAddress) as `0x${string}`,
+    address: getAddress(pool.contractAddress, chain?.id) as `0x${string}`,
     abi: stakeContract,
     functionName: "periodFinish",
   });
@@ -146,8 +146,8 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
     try {
       setApproving(true);
       const approvalResult: ApprovalResult = await approve(
-        getAddress(pool.stakingToken),
-        getAddress(pool.contractAddress),
+        getAddress(pool.stakingToken, chain?.id),
+        getAddress(pool.contractAddress, chain?.id),
         TokenABI,
         amount,
         signer_from
@@ -198,15 +198,13 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
   const [claiming, setClaiming] = useState(false);
 
   const contractCall = useContracts(
-    getAddress(pool.contractAddress) as `0x${string}`
+    getAddress(pool.contractAddress, chain?.id) as `0x${string}`
   );
 
   const transaction = useTransaction(contractCall.data?.hash);
 
   useEffect(() => {
     if (transaction?.status === "success") {
-      // console.log(transaction);
-
       setClaiming(false);
     }
   }, [transaction]);
@@ -219,6 +217,15 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
   };
 
   const [aprValue, setAprValue] = useState(0);
+  const [buyUrl, setBuyUrl] = useState("");
+
+  useEffect(() => {
+    if (chain?.id && pool.buyURL) {
+      const chainId = chain?.id;
+
+      setBuyUrl(pool.buyURL[chainId].toString());
+    }
+  }, [chain?.id, pool]);
 
   useEffect(() => {
     if (pool.isLp) {
@@ -356,7 +363,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
             displayApr={aprValue}
           />
 
-          {chain?.id === 56 ? (
+          {chain?.id === 56 || chain?.id === 1116 ? (
             <div className="flex justify-center col-1">{claimButton}</div>
           ) : isConnected ? (
             <button
@@ -611,7 +618,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
               <div className="col-1">
                 <div className="text-[#669ca0] mt-[20px]">
                   <Link
-                    href={pool.buyURL}
+                    href={buyUrl}
                     target="_blank"
                     className="bg-gradient-to-br from-green-400 to-yellow-300 text-black text-sm pl-5 pr-5 rounded-[1rem]"
                   >
@@ -622,9 +629,11 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
               <div className="col-1">
                 <div className="text-[#669ca0] mt-[20px]">
                   <Link
-                    href={`https://bscscan.com/address/${getAddress(
-                      pool.contractAddress
-                    )}`}
+                    href={
+                      chain?.blockExplorers?.default.url +
+                      "/address/" +
+                      getAddress(pool.contractAddress, chain?.id)
+                    }
                     target="_blank"
                     className="bg-gradient-to-br from-green-400 to-yellow-300 text-black text-sm pl-5 pr-5 rounded-[1rem]"
                   >
@@ -749,7 +758,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
                 <div className="col-1">
                   <div className="text-[#669ca0] mt-[20px]">
                     <Link
-                      href={pool.buyURL}
+                      href={buyUrl}
                       target="_blank"
                       className="bg-gradient-to-br from-green-400 to-yellow-300 text-black text-sm pl-5 pr-5 rounded-[1rem]"
                     >
@@ -760,9 +769,11 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
                 <div className="col-1">
                   <div className="text-[#669ca0] mt-[20px]">
                     <Link
-                      href={`https://bscscan.com/address/${getAddress(
-                        pool.contractAddress
-                      )}`}
+                      href={
+                        chain?.blockExplorers?.default.url +
+                        "/address/" +
+                        getAddress(pool.contractAddress, chain?.id)
+                      }
                       target="_blank"
                       className="bg-gradient-to-br from-green-400 to-yellow-300 text-black text-sm pl-5 pr-5 rounded-[1rem]"
                     >
