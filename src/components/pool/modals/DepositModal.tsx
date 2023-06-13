@@ -68,7 +68,7 @@ const DepositModal = ({
   const args = {
     depositTo,
     gassData: {
-      gasLimit: 900000,
+      gasLimit: 1100000,
     },
   };
   const { config, error } = usePrepareContractWrite({

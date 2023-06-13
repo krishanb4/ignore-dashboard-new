@@ -70,7 +70,7 @@ const WithdrawtModal = memo(
     const args = {
       depositTo,
       gassData: {
-        gasLimit: 1000000,
+        gasLimit: 1100000,
       },
     };
     const { config, error } = usePrepareContractWrite({
