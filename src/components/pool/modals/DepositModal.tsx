@@ -132,7 +132,8 @@ const DepositModal = ({
     },
   });
   useEffect(() => {
-    console.log(transaction?.isSuccess);
+    // console.log(transaction?.isSuccess);
+    transaction?.isSuccess;
   }, [transaction]);
 
   const handleDeposit = () => {
