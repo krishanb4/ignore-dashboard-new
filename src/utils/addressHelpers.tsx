@@ -15,6 +15,6 @@ export const getAddress = (address: Addresses, chainId?: number): string => {
   }
 };
 
-export const getMulticallAddress = () => {
-  return null;
-};
+// export const getMulticallAddress = () => {
+//   return null;
+// };
