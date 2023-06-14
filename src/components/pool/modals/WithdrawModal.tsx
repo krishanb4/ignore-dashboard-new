@@ -90,11 +90,11 @@ const WithdrawtModal = memo(
           ? "dark"
           : "default";
         if (theme === "default") {
-          toast.error("Failed to send deposit: " + error, {
+          toast.error("Failed to send unstake: " + error, {
             theme: "light",
           });
         } else {
-          toast.error("Failed to send deposit: " + error, {
+          toast.error("Failed to send unstake: " + error, {
             theme: "dark",
           });
         }
