@@ -147,11 +147,16 @@ const WithdrawtModal = memo(
       write?.();
     };
 
+    console.log(userBalance);
+    console.log(depositAmount);
+
     const setMax = () => {
       setDepositAmount(userBalance.toString());
     };
     let buttonElement;
     if (userBalance > 0) {
+      console.log("here");
+
       if (Number(depositAmount) > userBalance) {
         buttonElement = (
           <button
@@ -163,6 +168,8 @@ const WithdrawtModal = memo(
           </button>
         );
       } else if (Number(depositAmount) > 0 && !depositing) {
+        console.log("here");
+
         buttonElement = (
           <button
             onClick={handleDeposit}
@@ -211,7 +218,7 @@ const WithdrawtModal = memo(
 
     return (
       <>
-        {chain?.id === 56 ? (
+        {chain?.id === 56 || chain?.id === 1116 ? (
           <button
             onClick={
               locked && !isGrater

@@ -70,11 +70,10 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
     getAddress(pool.contractAddress, chain?.id) as `0x${string}`
   );
   const allowanceFrom = useAllowance(
-    getAddress(pool.stakingToken) as `0x${string}`,
-    address as `0x${string}`,
-    getAddress(pool.contractAddress) as `0x${string}`
+    getAddress(pool.stakingToken, chain?.id) as `0x${string}`,
+    address,
+    getAddress(pool.contractAddress, chain?.id) as `0x${string}`
   );
-  // console.log(allowanceFrom);
 
   const staked = useStaked(
     address,
@@ -229,17 +228,19 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
 
   useEffect(() => {
     if (pool.isLp) {
+      const factor = chain?.id === 56 ? pool.factor : pool.factorCore;
       const apr =
-        (rewardRate * pancakeswapPrice * pool.factor * (3 * 365 * 2880 * 100)) /
+        (rewardRate * pancakeswapPrice * factor * (3 * 365 * 2880 * 100)) /
         pancakeswapLPPrice;
       setAprValue(apr);
     } else {
+      const factor = chain?.id === 56 ? pool.factor : pool.factorCore;
       const apr =
-        (rewardRate * pancakeswapPrice * pool.factor * (3 * 365 * 2880 * 100)) /
+        (rewardRate * pancakeswapPrice * factor * (3 * 365 * 2880 * 100)) /
         pancakeswapPrice;
       setAprValue(apr);
     }
-  }, [pancakeswapLPPrice, pancakeswapPrice, rewardRate, pool]);
+  }, [pancakeswapLPPrice, pancakeswapPrice, rewardRate, pool, chain?.id]);
 
   let claimButton;
   if (claiming) {
@@ -334,6 +335,8 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
       </button>
     );
   }
+
+  console.log(allowanceFrom);
 
   return (
     <>

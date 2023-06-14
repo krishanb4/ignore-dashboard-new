@@ -12,7 +12,7 @@ export const chainlist = {
       symbol: "CORE",
     },
     rpcUrls: {
-      public: { http: ["https://rpc.coredao.org"] },
+      public: { http: ["https://rpc.coredao.org", "https://core.nodeproviders.com/"] },
       default: { http: ["https://rpc.coredao.org"] },
     },
     blockExplorers: {

@@ -208,7 +208,7 @@ const DepositModal = ({
 
   return (
     <>
-      {chain?.id === 56 ? (
+      {chain?.id === 56 || chain?.id === 1116 ? (
         endedpool ? (
           ""
         ) : (

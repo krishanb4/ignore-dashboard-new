@@ -22,6 +22,10 @@ export function useAllowance(
     watch: true,
   });
 
+  // console.log(stakingaddress);
+  // console.log(address);
+  // console.log(contractaddress);
+
   // console.log(Number(data));
 
   return Number(data) / 10 ** 18;
@@ -37,7 +41,6 @@ export function useStaked(
     functionName: "balanceOf",
     args: [address],
     watch: true,
-    cacheTime: 2_000,
   });
 
   return Number(data) / 10 ** 18;
@@ -53,7 +56,6 @@ export function useEarn(
     functionName: "earned",
     args: [address],
     watch: true,
-    cacheTime: 2_000,
   });
   return Number(data) / 10 ** 18;
 }
@@ -64,7 +66,6 @@ export function useSupply(contractaddress: `0x${string}`) {
     abi: stakeContract,
     functionName: "totalSupply",
     watch: true,
-    cacheTime: 2_000,
   });
   return Number(data) / 10 ** 18;
 }
@@ -75,7 +76,6 @@ export function usePanelty(contractaddress: `0x${string}`) {
     abi: stakeContract,
     functionName: "periodPenalty",
     watch: true,
-    cacheTime: 2_000,
   });
 
   return Number(data);
@@ -89,7 +89,6 @@ export function useTokenBalance(
     address: address,
     token: stakingaddress,
     watch: true,
-    cacheTime: 2_000,
   });
 
   return Number(data?.value) / 10 ** 18;
@@ -100,7 +99,6 @@ export function useContractConfig(contractaddress: `0x${string}`) {
     address: contractaddress,
     abi: stakeContract,
     functionName: "getReward",
-    cacheTime: 2_000,
   });
   return config;
 }
@@ -111,7 +109,6 @@ export function useRewardRate(contractaddress: `0x${string}`) {
     abi: stakeContract,
     functionName: "rewardPerToken",
     watch: true,
-    cacheTime: 2_000,
   });
   return Number(data) / 10 ** 18;
 }

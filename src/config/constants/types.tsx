@@ -41,4 +41,5 @@ export interface PoolConfig {
   enableEmergencyWithdraw?: boolean;
   buyURL: Urls;
   factor: number;
+  factorCore: number;
 }
