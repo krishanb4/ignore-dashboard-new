@@ -18,6 +18,7 @@ const ExampleCharts = () => {
     tokenData,
     tokenBurnData,
     tokenBurnDataAuto,
+    tokenBurnDataBSC,
     dataCategories,
     autoburnData,
     manualBurnData,
@@ -277,7 +278,7 @@ const ExampleCharts = () => {
                 </SkeletonTheme>
               ) : (
                 <p className="leading-relaxed text-base text-black dark:text-white">
-                  {numeral(tokenBurnData + tokenBurnDataAuto)
+                  {numeral(tokenBurnData + tokenBurnDataAuto + tokenBurnDataBSC)
                     .format("0.000a")
                     .toUpperCase()}
                 </p>
@@ -392,6 +393,10 @@ const ExampleCharts = () => {
                   <li>
                     Auto :{" "}
                     {numeral(tokenBurnDataAuto).format("0.000a").toUpperCase()}
+                  </li>
+                  <li>
+                    BSC :{" "}
+                    {numeral(tokenBurnDataBSC).format("0.000a").toUpperCase()}
                   </li>
                 </ul>
               )}
