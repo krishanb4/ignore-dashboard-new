@@ -20,7 +20,7 @@ const pools: PoolConfig[] = [
     poolCategory: PoolCategory.NO_LOCK,
     harvest: true,
     sortOrder: 1,
-    factor: 1,
+    factor: 0.000003,
     isFinished: false,
     buyURL: `https://pancakeswap.finance/add/BNB/0x61B83eDF87Ea662C695439A807c386455c9E797C`,
   },
