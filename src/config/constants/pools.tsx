@@ -22,7 +22,7 @@ const pools: PoolConfig[] = [
     sortOrder: 1,
     factor: 0.000003,
     isFinished: false,
-    buyURL: `https://pancakeswap.finance/add/BNB/0x61B83eDF87Ea662C695439A807c386455c9E797C`,
+    buyURL: `https://pancakeswap.finance/v2/pair/0x61B83eDF87Ea662C695439A807c386455c9E797C/BNB`,
   },
   {
     poolId: 2,
