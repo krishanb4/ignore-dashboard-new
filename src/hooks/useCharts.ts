@@ -6,6 +6,7 @@ type ChartData = {
   tokenData: number;
   tokenBurnData: number;
   tokenBurnDataAuto: number;
+  tokenBurnDataBSC: number;
   dataCategories: string[];
   autoburnData: number[];
   manualBurnData: number[];
@@ -46,6 +47,7 @@ export default function useCharts(): ChartData {
   const [tokenData, setTokenData] = useState(0);
   const [tokenBurnData, setTokenBurnData] = useState(0);
   const [tokenBurnDataAuto, setTokenBurnDataAuto] = useState(0);
+  const [tokenBurnDataBSC, setTokenBurnDataBSC] = useState(0);
   const [dataCategories, setDataCategories] = useState<string[]>([]);
   const [autoburnData, setautoburnData] = useState([]);
   const [manualBurnData, setmanualBurnData] = useState([]);
@@ -108,6 +110,8 @@ export default function useCharts(): ChartData {
           setTokenData(response.data["burnData"]["currentSupply"]);
           setTokenBurnData(response.data["burnData"]["manualBurn"]);
           setTokenBurnDataAuto(response.data["burnData"]["autoBurn"]);
+          setTokenBurnDataBSC(response.data["burnData"]["bscBurn"]);
+
           const autoBurns = response.data["burnData"]["autoBurns"];
 
           const manualBurns = response.data["burnData"]["manualBurns"];
@@ -175,7 +179,7 @@ export default function useCharts(): ChartData {
   return {
     tokenData,
     tokenBurnData,
-    tokenBurnDataAuto,
+    tokenBurnDataAuto, tokenBurnDataBSC,
     dataCategories,
     autoburnData,
     manualBurnData,
@@ -194,4 +198,3 @@ export default function useCharts(): ChartData {
     pancakeSwapTotalLP,
   };
 }
-
