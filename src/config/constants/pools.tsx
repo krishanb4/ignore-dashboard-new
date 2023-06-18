@@ -23,11 +23,11 @@ const pools: PoolConfig[] = [
     poolCategory: PoolCategory.NO_LOCK,
     harvest: true,
     sortOrder: 1,
-    factor: 1,
+    factor: 0.000003,
     factorCore: 1,
     isFinished: false,
     buyURL: {
-      56: `https://pancakeswap.finance/add/BNB/0x61B83eDF87Ea662C695439A807c386455c9E797C`,
+      56: `https://pancakeswap.finance/v2/add/0x61B83eDF87Ea662C695439A807c386455c9E797C/BNB`,
       1116: `https://exchange.archerswap.finance/swap?outputCurrency=0x98564e70c7fcc6d947ffe6d9efed5ba68b306f2e`,
     },
   },
