@@ -1,8 +1,12 @@
 import Head from "next/head";
 import Header from "@/components/Header";
 import Theme from "@/components/Theme";
-import SelectButtons from "@/components/SelectButtons";
+//import SelectButtons from "@/components/SelectButtons";
+const SelectButtons = dynamic(() => import("../components/SelectButtons"), {
+  ssr: false,
+});
 import { useFetchPublicData } from "../state/hooks";
+import dynamic from "next/dynamic";
 export default function Home() {
   useFetchPublicData();
   return (

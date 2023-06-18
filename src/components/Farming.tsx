@@ -33,10 +33,10 @@ const StakingCards = () => {
             </div>
           </div> */}
           <div className="items-center justify-center">
-            <p className="text-black dark:text-white">Coming Soon...</p>
-            {/* {filteredPools.map((pool) => (
+            {/* <p className="text-black dark:text-white">Coming Soon...</p> */}
+            {filteredPools.map((pool) => (
               <PoolCard key={pool.poolId} pool={pool} />
-            ))} */}
+            ))}
           </div>
         </div>
       </div>

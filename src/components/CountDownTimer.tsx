@@ -16,7 +16,7 @@ const Beer = () => {
   });
 
   useEffect(() => {
-    const beerTime = Date.UTC(2023, 5, 12, 10, 0, 0); // May 17, 2021 in UTC
+    const beerTime = Date.UTC(2023, 5, 18, 10, 0, 0); // May 17, 2021 in UTC
 
     const countdown = setInterval(() => {
       const now = Date.now();

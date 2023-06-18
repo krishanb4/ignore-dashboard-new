@@ -13,7 +13,7 @@ export const chainlist = {
     },
     rpcUrls: {
       public: { http: ["https://rpc.coredao.org", "https://core.nodeproviders.com/"] },
-      default: { http: ["https://rpc.coredao.org"] },
+      default: { http: ["https://rpc.coredao.org", "https://core.nodeproviders.com/"] },
     },
     blockExplorers: {
       etherscan: { name: "CoredaoScan", url: "https://scan.coredao.org" },
