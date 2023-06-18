@@ -336,7 +336,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
     );
   }
 
-  console.log(allowanceFrom);
+
 
   return (
     <>

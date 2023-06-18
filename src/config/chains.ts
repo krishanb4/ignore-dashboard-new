@@ -12,8 +12,8 @@ export const chainlist = {
       symbol: "CORE",
     },
     rpcUrls: {
-      public: { http: ["https://rpc.coredao.org", "https://core.nodeproviders.com/"] },
-      default: { http: ["https://rpc.coredao.org", "https://core.nodeproviders.com/"] },
+      public: { http: ["https://rpc.coredao.org", "https://rpc-core.icecreamswap.com/"] },
+      default: { http: ["https://rpc.coredao.org", "https://rpc-core.icecreamswap.com/"] },
     },
     blockExplorers: {
       etherscan: { name: "CoredaoScan", url: "https://scan.coredao.org" },
