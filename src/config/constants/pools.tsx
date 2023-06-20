@@ -53,7 +53,7 @@ const pools: PoolConfig[] = [
     harvest: true,
     sortOrder: 1,
     factor: 0.00021,
-    factorCore: 0.0000005,
+    factorCore: 0.00000005,
     isFinished: false,
     buyURL: {
       56: `https://pancakeswap.finance/swap?chain=bsc&outputCurrency=0x61B83eDF87Ea662C695439A807c386455c9E797C`,
@@ -82,7 +82,7 @@ const pools: PoolConfig[] = [
     harvest: true,
     sortOrder: 1,
     factor: 0.00053,
-    factorCore: 0.0000002,
+    factorCore: 0.00000002,
     isFinished: false,
     buyURL: {
       56: `https://pancakeswap.finance/swap?chain=bsc&outputCurrency=0x61B83eDF87Ea662C695439A807c386455c9E797C`,
@@ -111,7 +111,7 @@ const pools: PoolConfig[] = [
     harvest: true,
     sortOrder: 1,
     factor: 0.00041,
-    factorCore: 0.00000035,
+    factorCore: 0.000000035,
     isFinished: false,
     buyURL: {
       56: `https://pancakeswap.finance/swap?chain=bsc&outputCurrency=0x61B83eDF87Ea662C695439A807c386455c9E797C`,
