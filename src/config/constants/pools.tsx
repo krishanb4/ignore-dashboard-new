@@ -52,7 +52,7 @@ const pools: PoolConfig[] = [
     poolCategory: PoolCategory["NO_LOCK"],
     harvest: true,
     sortOrder: 1,
-    factor: 0.00021,
+    factor: 0.000105,
     factorCore: 0.00000005,
     isFinished: false,
     buyURL: {
@@ -81,7 +81,7 @@ const pools: PoolConfig[] = [
     poolCategory: PoolCategory["15D_LOCK"],
     harvest: true,
     sortOrder: 1,
-    factor: 0.00053,
+    factor: 0.0002515,
     factorCore: 0.00000002,
     isFinished: false,
     buyURL: {
@@ -110,7 +110,7 @@ const pools: PoolConfig[] = [
     poolCategory: PoolCategory["1Y_LOCK"],
     harvest: true,
     sortOrder: 1,
-    factor: 0.00041,
+    factor: 0.0001,
     factorCore: 0.000000035,
     isFinished: false,
     buyURL: {
