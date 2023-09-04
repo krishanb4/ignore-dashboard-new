@@ -21,7 +21,7 @@ import { publicProvider } from "@wagmi/core/providers/public";
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID!;
 
 const { chains, provider } = configureChains(
-  [chainlist.bscChain, chainlist.coreDAO],
+  [chainlist.bscChain, chainlist.coreDAO, chainlist.baseChain],
   [publicProvider()]
 );
 
@@ -55,9 +55,11 @@ export default function App({ Component, pageProps }: AppProps) {
           themeMode="dark"
           chainImages={{
             1116: "/images/coredao.png",
+            8453: "/images/base.png",
           }}
           tokenImages={{
             CORE: "/images/coredao.png",
+            BASE: "/images/base.png",
           }}
           themeVariables={{
             "--w3m-accent-color": "#115657",

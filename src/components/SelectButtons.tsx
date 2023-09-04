@@ -16,7 +16,6 @@ const SelectButtons: React.FC = () => {
     },
     {
       id: 2,
-
       name: "Staking",
     },
     {
