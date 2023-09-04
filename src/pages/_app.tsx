@@ -21,7 +21,7 @@ import { publicProvider } from "@wagmi/core/providers/public";
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID!;
 
 const { chains, provider } = configureChains(
-  [chainlist.bscChain, chainlist.coreDAO, chainlist.baseChain],
+  [chainlist.bscChain, chainlist.coreDAO],
   [publicProvider()]
 );
 
