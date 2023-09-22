@@ -79,7 +79,8 @@ const WithdrawtModal = memo(
     const { config, error } = usePrepareContractWrite({
       address: getAddress(contract, chain?.id) as `0x${string}`,
       abi: stakeContract,
-      functionName: "withdrawAmount",
+      //functionName: "withdrawAmount",
+      functionName: "withdraw",
       args: Object.values(args),
     });
     const { data, isLoading, isSuccess, write, status } = useContractWrite({
