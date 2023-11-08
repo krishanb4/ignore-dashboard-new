@@ -213,8 +213,8 @@ const DepositModal = ({
           ""
         ) : (
           <button
-            onClick={() => setModalOpen(true)}
-            className="bg-gradient-to-br from-green-400 to-yellow-300 text-black text-sm p-3 pl-5 pr-5 rounded-[1rem]"
+            // onClick={() => setModalOpen(true)}
+            className="bg-gradient-to-br from-slate-400 to-slate-300 text-black text-sm p-3 pl-5 pr-5 opacity-5 rounded-[1rem] disabled"
           >
             Stake
           </button>
