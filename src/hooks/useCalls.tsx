@@ -8,6 +8,7 @@ import {
 } from "wagmi";
 import TokenABI from "@/config/abi/bscUSDT.json";
 import stakeContract from "@/config/abi/stakeContract.json";
+import { ethers, BigNumber } from "ethers";
 
 export function useAllowance(
   stakingaddress: `0x${string}`,

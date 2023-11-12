@@ -550,14 +550,14 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
           <div className="col-1">
             <div className="text-[#669ca0]">Your deposit</div>
             <div className="text-white md:text-[3rem] text-[2rem]">
-              {staked > 0 ? numeral(staked).format("0.00a").toUpperCase() : 0}
+              {/* {staked > 0 ? numeral(staked).format("0.00a").toUpperCase() : 0} */}
               <span className="text-sm grid">
-                ($
+                {/* ($
                 {staked > 0 &&
                 Number(numeral(staked * tokienPrice).format("0.000a")) > 0
                   ? numeral(staked * tokienPrice).format("0.000a")
                   : 0}
-                )
+                ) */}
               </span>
             </div>
           </div>
@@ -573,9 +573,9 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
           <div className="col-1">
             <div className="text-[#669ca0]">Earning</div>
             <div className="text-green-400 md:text-[3rem] text-[2rem] text-gradient-to-b">
-              {earned > 0
+              {/* {earned > 0
                 ? numeral(Number(earned)).format("0.000a").toUpperCase()
-                : 0}
+                : 0} */}
             </div>
             <span className="text-sm text-white">4TOKEN</span>
           </div>
@@ -588,7 +588,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
           <div className="grid-cols-3 hidden md:grid mt-[20px]">
             <div className="col-1">
               <div className="text-[#669ca0]">
-                {Number(allowanceFrom) > 0 ? (
+                {/* {Number(allowanceFrom) > 0 ? (
                   <>
                     <DepositModal
                       contract={pool.contractAddress}
@@ -694,7 +694,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
                       <span className="hidden md:block">{enableButton} </span>
                     )}
                   </button>
-                )}
+                )} */}
               </div>
             </div>
             <div className="col-1">
@@ -727,7 +727,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
           <div className="md:hidden mt-[20px] ">
             <div className="col-1">
               <div className="text-[#669ca0]">
-                {Number(allowanceFrom) > 0 ? (
+                {/* {Number(allowanceFrom) > 0 ? (
                   <>
                     <DepositModal
                       contract={pool.contractAddress}
@@ -833,7 +833,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
                       <span className="block md:hidden">{enableButton}</span>
                     )}
                   </button>
-                )}
+                )} */}
               </div>
             </div>
             <div className="grid grid-cols-2">
