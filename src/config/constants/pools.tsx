@@ -17,7 +17,7 @@ const pools: PoolConfig[] = [
     },
     contractAddress: {
       56: "0x640451baEa0BabDE2f3636FFCAfC0B7318e986d9",
-      1116: "0x0a8A3a878DA1B58BE063AFa330E5BC0095AD2FdB",
+      1116: "0x78F1072ca3A8279D3d961ab904d61E3032C2302a",
     },
     isLp: true,
     poolCategory: PoolCategory.NO_LOCK,
@@ -46,7 +46,7 @@ const pools: PoolConfig[] = [
     },
     contractAddress: {
       56: "0xdeb4fAF9E3d8092aFEdc4B25f2a3d5e61Aa32Dd8",
-      1116: "0x2CaBc908c163f966fD9A1493211F91B0371A8575",
+      1116: "0x78F1072ca3A8279D3d961ab904d61E3032C2302a",
     },
     isLp: false,
     poolCategory: PoolCategory["NO_LOCK"],
@@ -75,7 +75,7 @@ const pools: PoolConfig[] = [
     },
     contractAddress: {
       56: "0xf298dBeCe9C82548869545Fa219668AFE523AF02",
-      1116: "0xBA554Bd93BF6EE9E2F2f85F9448513F932E338Ad",
+      1116: "0xCD2A88F7EA6E59F7f78714C41eda99066d54B352",
     },
     isLp: false,
     poolCategory: PoolCategory["15D_LOCK"],
@@ -104,7 +104,7 @@ const pools: PoolConfig[] = [
     },
     contractAddress: {
       56: "0x6bDEd208a93226ed57115d65718b7586EFd8Ea1c",
-      1116: "0x8b3cC46943243E260E201ADd16F2ed15253f6702",
+      1116: "0xD3B87d4321a70c8754A47bCCa79d544Bc9DC381b",
     },
     isLp: false,
     poolCategory: PoolCategory["1Y_LOCK"],

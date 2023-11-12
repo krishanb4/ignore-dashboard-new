@@ -21,7 +21,7 @@ import { publicProvider } from "@wagmi/core/providers/public";
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID!;
 
 const { chains, provider } = configureChains(
-  [chainlist.bscChain, chainlist.coreDAO],
+  [chainlist.coreDAO],
   [publicProvider()]
 );
 
@@ -40,34 +40,32 @@ interface MyContextValue {
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <>
-      <Provider store={store}>
-        <WagmiConfig client={wagmiClient}>
-          <Component {...pageProps} />
-          <ToastContainer />
-        </WagmiConfig>
-        <Web3Modal
-          projectId={projectId}
-          enableAccountView={true}
-          ethereumClient={ethereumClient}
-          enableNetworkView={true}
-          defaultChain={bsc}
-          themeMode="dark"
-          chainImages={{
-            1116: "/images/coredao.png",
-            8453: "/images/base.png",
-          }}
-          tokenImages={{
-            CORE: "/images/coredao.png",
-            BASE: "/images/base.png",
-          }}
-          themeVariables={{
-            "--w3m-accent-color": "#115657",
-            "--w3m-logo-image-url": "/images/logo_name.png",
-            "--w3m-background-color": "#115657",
-          }}
-        />
-      </Provider>
-    </>
+    <Provider store={store}>
+      <WagmiConfig client={wagmiClient}>
+        <Component {...pageProps} />
+        <ToastContainer />
+      </WagmiConfig>
+      <Web3Modal
+        projectId={projectId}
+        enableAccountView={true}
+        ethereumClient={ethereumClient}
+        enableNetworkView={true}
+        defaultChain={bsc}
+        themeMode="dark"
+        chainImages={{
+          1116: "/images/coredao.png",
+          8453: "/images/base.png",
+        }}
+        tokenImages={{
+          CORE: "/images/coredao.png",
+          BASE: "/images/base.png",
+        }}
+        themeVariables={{
+          "--w3m-accent-color": "#115657",
+          "--w3m-logo-image-url": "/images/logo_name.png",
+          "--w3m-background-color": "#115657",
+        }}
+      />
+    </Provider>
   );
 }

@@ -2,11 +2,11 @@ import Image from "next/image";
 import { use, useContext, useEffect, useMemo, useRef, useState } from "react";
 import PoolCardDetails from "./PoolCardDetails";
 import { Pool } from "../../state/types";
-import BigNumber from "bignumber.js";
+
 import useCharts from "@/hooks/useCharts";
 import { toast } from "react-toastify";
 import { approve, ApprovalResult } from "@/utils/callFunctions";
-import { ethers } from "ethers";
+import { ethers, BigNumber } from "ethers";
 import dynamic from "next/dynamic";
 import {
   useAccount,
@@ -34,6 +34,7 @@ const DepositModal = dynamic(() => import("./modals/DepositModal"), {
 const WithdrawtModal = dynamic(() => import("./modals/WithdrawModal"), {
   ssr: false,
 });
+
 import numeral from "numeral";
 import {
   useAllowance,
@@ -46,6 +47,11 @@ import {
   useTokenBalance,
   useTransaction,
 } from "@/hooks/useCalls";
+import NoLock from "./no_lock.json";
+import DayLock from "./day_lock.json";
+import YearLock from "./year_lock.json";
+import { pipeline } from "stream";
+
 export interface PoolsWithStakedValue extends Pool {
   liquidity?: BigNumber;
 }
@@ -54,6 +60,13 @@ interface PoolCardProps {
   pool: PoolsWithStakedValue;
   userBalance?: number;
 }
+
+type ClaimArgs = {
+  amount: BigNumber;
+  nonce: BigNumber;
+  receiver: string;
+  signature: any;
+};
 
 const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
   pool,
@@ -65,44 +78,119 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
   const { chain } = useNetwork();
   const { chains, pendingChainId, switchNetwork } = useSwitchNetwork();
   const [expandCard, setExpandCard] = useState(false);
-  const earned = useEarn(
+  // const earned = useEarn(
+  //   address,
+  //   getAddress(pool.contractAddress, chain?.id) as `0x${string}`
+  // );
+  // const allowanceFrom = useAllowance(
+  //   getAddress(pool.stakingToken, chain?.id) as `0x${string}`,
+  //   address,
+  //   getAddress(pool.contractAddress, chain?.id) as `0x${string}`
+  // );
+
+  const claimed = useStaked(
     address,
     getAddress(pool.contractAddress, chain?.id) as `0x${string}`
   );
-  const allowanceFrom = useAllowance(
-    getAddress(pool.stakingToken, chain?.id) as `0x${string}`,
-    address,
-    getAddress(pool.contractAddress, chain?.id) as `0x${string}`
-  );
 
-  const staked = useStaked(
-    address,
-    getAddress(pool.contractAddress, chain?.id) as `0x${string}`
-  );
+  // const rewardRate = useRewardRate(
+  //   getAddress(pool.contractAddress, chain?.id) as `0x${string}`
+  // );
 
-  const rewardRate = useRewardRate(
-    getAddress(pool.contractAddress, chain?.id) as `0x${string}`
-  );
+  // const totalSupply = useSupply(
+  //   getAddress(pool.contractAddress, chain?.id) as `0x${string}`
+  // );
 
-  const totalSupply = useSupply(
-    getAddress(pool.contractAddress, chain?.id) as `0x${string}`
-  );
+  // const periodPenalty = usePanelty(
+  //   getAddress(pool.contractAddress, chain?.id) as `0x${string}`
+  // );
 
-  const periodPenalty = usePanelty(
-    getAddress(pool.contractAddress, chain?.id) as `0x${string}`
-  );
+  // const isUnixTimeGreaterThanNow = (givenTime: number) => {
+  //   const currentTime = Date.now(); // Current Unix time in milliseconds
+  //   return givenTime > currentTime;
+  // };
 
-  const isUnixTimeGreaterThanNow = (givenTime: number) => {
-    const currentTime = Date.now(); // Current Unix time in milliseconds
-    return givenTime > currentTime;
-  };
+  const [eligible, setIsEligible] = useState(false);
+
+  const [args, setArgs] = useState({} as ClaimArgs);
+  const [eligibleAmount, setEligibleAmount] = useState(0);
+
+  console.log(eligibleAmount);
+
+  useEffect(() => {
+    if (pool.poolCategory === "No Lock") {
+      const filtered = NoLock.filter((element) => element.address == address);
+
+      if (filtered.length > 0) {
+        const element = filtered[0];
+        setIsEligible(true);
+        if (claimed) {
+          setEligibleAmount(0);
+        } else {
+          setEligibleAmount(Number(element.amount) / 10 ** 18);
+        }
+
+        setArgs({
+          amount: BigNumber.from(element.amount),
+          nonce: BigNumber.from(element.nonce),
+          receiver: element.address,
+          signature: element.signature,
+        });
+      } else {
+        setIsEligible(false);
+        setArgs({} as ClaimArgs);
+      }
+    } else if (pool.poolCategory === "15D Lock") {
+      const filtered = DayLock.filter((element) => element.address == address);
+
+      if (filtered.length > 0) {
+        const element = filtered[0];
+        setIsEligible(true);
+        if (claimed) {
+          setEligibleAmount(0);
+        } else {
+          setEligibleAmount(Number(element.amount) / 10 ** 18);
+        }
+        setArgs({
+          amount: BigNumber.from(element.amount),
+          nonce: BigNumber.from(element.nonce),
+          receiver: element.address,
+          signature: element.signature,
+        });
+      } else {
+        setIsEligible(false);
+        setArgs({} as ClaimArgs);
+      }
+    } else if (pool.poolCategory === "1Y Lock") {
+      const filtered = YearLock.filter((element) => element.address == address);
+
+      if (filtered.length > 0) {
+        const element = filtered[0];
+        setIsEligible(true);
+        if (claimed) {
+          setEligibleAmount(0);
+        } else {
+          setEligibleAmount(Number(element.amount) / 10 ** 18);
+        }
+        setArgs({
+          amount: BigNumber.from(element.amount),
+          nonce: BigNumber.from(element.nonce),
+          receiver: element.address,
+          signature: element.signature,
+        });
+      } else {
+        setIsEligible(false);
+        setArgs({} as ClaimArgs);
+      }
+    }
+  }, [address, pool, claimed]);
 
   const [isGreater, setIsGreater] = useState(false);
 
-  useEffect(() => {
-    const givenTime = new Date(periodPenalty).getTime(); // Replace with your given time
-    setIsGreater(isUnixTimeGreaterThanNow(givenTime));
-  }, [periodPenalty]);
+  // useEffect(() => {
+  //   const givenTime = new Date(periodPenalty).getTime(); // Replace with your given time
+  //   setIsGreater(isUnixTimeGreaterThanNow(givenTime));
+  // }, [periodPenalty]);
 
   const [tvlInUSD, setTvlInUSD] = useState(0);
   const userBalance = useTokenBalance(
@@ -197,7 +285,8 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
   const [claiming, setClaiming] = useState(false);
 
   const contractCall = useContracts(
-    getAddress(pool.contractAddress, chain?.id) as `0x${string}`
+    getAddress(pool.contractAddress, chain?.id) as `0x${string}`,
+    args
   );
 
   const transaction = useTransaction(contractCall.data?.hash);
@@ -226,21 +315,21 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
     }
   }, [chain?.id, pool]);
 
-  useEffect(() => {
-    if (pool.isLp) {
-      const factor = chain?.id === 56 ? pool.factor : pool.factorCore;
-      const apr =
-        (rewardRate * pancakeswapPrice * factor * (3 * 365 * 2880 * 100)) /
-        pancakeswapLPPrice;
-      setAprValue(apr);
-    } else {
-      const factor = chain?.id === 56 ? pool.factor : pool.factorCore;
-      const apr =
-        (rewardRate * pancakeswapPrice * factor * (3 * 365 * 2880 * 100)) /
-        pancakeswapPrice;
-      setAprValue(apr);
-    }
-  }, [pancakeswapLPPrice, pancakeswapPrice, rewardRate, pool, chain?.id]);
+  // useEffect(() => {
+  //   if (pool.isLp) {
+  //     const factor = chain?.id === 56 ? pool.factor : pool.factorCore;
+  //     const apr =
+  //       (rewardRate * pancakeswapPrice * factor * (3 * 365 * 2880 * 100)) /
+  //       pancakeswapLPPrice;
+  //     setAprValue(apr);
+  //   } else {
+  //     const factor = chain?.id === 56 ? pool.factor : pool.factorCore;
+  //     const apr =
+  //       (rewardRate * pancakeswapPrice * factor * (3 * 365 * 2880 * 100)) /
+  //       pancakeswapPrice;
+  //     setAprValue(apr);
+  //   }
+  // }, [pancakeswapLPPrice, pancakeswapPrice, rewardRate, pool, chain?.id]);
 
   let claimButton;
   if (claiming) {
@@ -315,75 +404,69 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
               ></animate>
             </circle>
           </svg>
-          <span className="block">Claiming</span>
+          <span className="block">Unstaking</span>
         </div>
       </button>
     );
-  } else if (earned > 0.001) {
+  } else if (eligible && !claimed) {
     claimButton = (
       <button
         onClick={HanddleClaim}
         className="bg-gradient-to-br from-green-400 to-yellow-300 text-black text-sm pt-0 pl-5 pr-5 rounded-[1rem]"
       >
-        Claim
+        Unstake
       </button>
     );
   } else {
     claimButton = (
       <button className="opacity-25 bg-gradient-to-br from-green-400 to-yellow-300 text-black text-sm pt-0 pl-5 pr-5 rounded-[1rem]">
-        Claim
+        Unstake
       </button>
     );
   }
 
-
-
   return (
-    <>
+    <div
+      key={pool.poolId}
+      className={`p-2 mt-5 border bg-[#115657]  border-gray-200 rounded-[1.5rem] shadow dark:border-gray-700`}
+    >
       <div
-        key={pool.poolId}
-        className={`p-2 mt-5 border bg-[#115657]  border-gray-200 rounded-[1.5rem] shadow dark:border-gray-700 `}
+        className={`grid grid-cols-4`}
+        // onClick={() => setExpandCard(!expandCard)}
       >
-        <div
-          className={`grid grid-cols-5`}
-          onClick={() => setExpandCard(!expandCard)}
-        >
-          <div className="flex items-center col-span-1">
-            <Image src="/images/4logo.png" alt="" width={30} height={30} />
-            <div className="grid grid-cols-1 gap-1 text-left">
-              <span className="font-medium text-white text-[15px] ml-[10px]">
-                {pool.name}
-              </span>
-              <span className=" text-gray-400 text-sm flex-none ml-[10px] ">
-                {pool.poolCategory}
-              </span>
-            </div>
+        <div className="flex items-center col-span-1">
+          <Image src="/images/4logo.png" alt="" width={30} height={30} />
+          <div className="grid grid-cols-1 gap-1 text-left">
+            <span className="font-medium text-white text-[15px] ml-[10px]">
+              {pool.name}
+              {pool.poolId}
+            </span>
+            <span className=" text-gray-400 text-sm flex-none ml-[10px] ">
+              {pool.poolCategory}
+            </span>
           </div>
+        </div>
 
-          <PoolCardDetails
-            earn={earned}
-            tvl={totalSupply * Number(tokienPrice)}
-            displayApr={aprValue}
-          />
+        <PoolCardDetails tvl={eligibleAmount} />
 
-          {chain?.id === 56 || chain?.id === 1116 ? (
-            <div className="flex justify-center col-1">{claimButton}</div>
-          ) : isConnected ? (
-            <button
-              onClick={() => switchNetwork?.(56)}
-              className="bg-gradient-to-br from-red-400 to-red-300 text-white text-sm pt-0 pl-5 pr-5 rounded-[1rem]"
-            >
-              Wrong Network
-            </button>
-          ) : (
-            <button
-              onClick={() => connect()}
-              className="bg-gradient-to-br from-red-400 to-red-300 text-white text-sm pt-0 pl-5 pr-5 rounded-[1rem]"
-            >
-              Connect Wallet
-            </button>
-          )}
-          <div className="flex items-center col-span-1 justify-end p-4">
+        {chain?.id === 56 || chain?.id === 1116 ? (
+          <div className="flex justify-center col-1">{claimButton}</div>
+        ) : isConnected ? (
+          <button
+            onClick={() => switchNetwork?.(56)}
+            className="bg-gradient-to-br from-red-400 to-red-300 text-white text-sm pt-0 pl-5 pr-5 rounded-[1rem]"
+          >
+            Wrong Network
+          </button>
+        ) : (
+          <button
+            onClick={() => connect()}
+            className="bg-gradient-to-br from-red-400 to-red-300 text-white text-sm pt-0 pl-5 pr-5 rounded-[1rem]"
+          >
+            Connect Wallet
+          </button>
+        )}
+        {/* <div className="flex items-center col-span-1 justify-end p-4">
             <button
               onClick={
                 expandCard
@@ -408,40 +491,40 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
                 />
               )}
             </button>
+          </div> */}
+      </div>
+      {expandCard ? (
+        ""
+      ) : (
+        <div>
+          <div className="grid  justify-center gap-4 grid-cols-3 space-x-4">
+            <span className="px-4 py-2 text-black dark:text-white md:hidden flex justify-center">
+              TVL
+            </span>
+            <span className="px-4 py-2 text-black dark:text-white flex md:hidden justify-center">
+              APR
+            </span>
+            <span className="px-4 py-2 text-black dark:text-white flex md:hidden justify-center">
+              Earned
+            </span>
           </div>
-        </div>
-        {expandCard ? (
-          ""
-        ) : (
-          <div>
-            <div className="grid  justify-center gap-4 grid-cols-3 space-x-4">
-              <span className="px-4 py-2 text-black dark:text-white md:hidden flex justify-center">
-                TVL
-              </span>
-              <span className="px-4 py-2 text-black dark:text-white flex md:hidden justify-center">
-                APR
-              </span>
-              <span className="px-4 py-2 text-black dark:text-white flex md:hidden justify-center">
-                Earned
-              </span>
-            </div>
-            <div className="grid grid-cols-3 justify-center space-x-4">
-              <span className="px-4 py-2 text-white flex md:hidden  justify-center">
-                $
-                {numeral(Number(totalSupply * tokienPrice))
-                  .format("0.00a")
-                  .toUpperCase()}
-              </span>
-              <span className="px-4 py-2 text-white flex md:hidden  justify-center">
+          <div className="grid grid-cols-3 justify-center space-x-4">
+            {/* <span className="px-4 py-2 text-white flex md:hidden  justify-center">
+              $
+              {numeral(Number(totalSupply * tokienPrice))
+                .format("0.00a")
+                .toUpperCase()}
+            </span> */}
+            {/* <span className="px-4 py-2 text-white flex md:hidden  justify-center">
                 {numeral(Number(aprValue)).format("0.00a").toUpperCase()}%
               </span>
               <span className="px-4 py-2 text-white flex md:hidden justify-center">
                 {earned > 0 ? earned.toFixed(3) : 0}
-              </span>
-            </div>
+              </span> */}
           </div>
-        )}
-        <div>
+        </div>
+      )}
+      {/* <div>
           {countdown ? (
             <div className="relative ml-[40px] flex text-white justify-start">
               Ends in: {countdown}
@@ -460,164 +543,300 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
               </p>
             </SkeletonTheme>
           )}
-        </div>
-        {expandCard ? (
-          <div className="border-b border-[#1e6365] my-4"></div>
-        ) : (
-          ""
-        )}
-        {expandCard ? (
-          <div className="grid grid-cols-3 ">
-            <div className="col-1">
-              <div className="text-[#669ca0]">Your deposit</div>
-              <div className="text-white md:text-[3rem] text-[2rem]">
-                {staked > 0 ? numeral(staked).format("0.00a").toUpperCase() : 0}
-                <span className="text-sm grid">
-                  ($
-                  {staked > 0 &&
-                  Number(numeral(staked * tokienPrice).format("0.000a")) > 0
-                    ? numeral(staked * tokienPrice).format("0.000a")
-                    : 0}
-                  )
-                </span>
-              </div>
-            </div>
-            <div className="col-1">
-              <div className="text-[#669ca0]">APR%</div>
-              <div className="text-white md:text-[3rem] text-[2rem]">
-                {numeral(Number(aprValue).toFixed(2))
-                  .format("0.0a")
-                  .toUpperCase()}
-                %
-              </div>
-            </div>
-            <div className="col-1">
-              <div className="text-[#669ca0]">Earning</div>
-              <div className="text-green-400 md:text-[3rem] text-[2rem] text-gradient-to-b">
-                {earned > 0
-                  ? numeral(Number(earned)).format("0.000a").toUpperCase()
+        </div> */}
+      {expandCard ? <div className="border-b border-[#1e6365] my-4"></div> : ""}
+      {expandCard ? (
+        <div className="grid grid-cols-3 ">
+          <div className="col-1">
+            <div className="text-[#669ca0]">Your deposit</div>
+            <div className="text-white md:text-[3rem] text-[2rem]">
+              {staked > 0 ? numeral(staked).format("0.00a").toUpperCase() : 0}
+              <span className="text-sm grid">
+                ($
+                {staked > 0 &&
+                Number(numeral(staked * tokienPrice).format("0.000a")) > 0
+                  ? numeral(staked * tokienPrice).format("0.000a")
                   : 0}
-              </div>
-              <span className="text-sm text-white">4TOKEN</span>
+                )
+              </span>
             </div>
           </div>
-        ) : (
-          ""
-        )}
-        {expandCard ? (
-          <div>
-            <div className="grid-cols-3 hidden md:grid mt-[20px]">
-              <div className="col-1">
-                <div className="text-[#669ca0]">
-                  {Number(allowanceFrom) > 0 ? (
-                    <>
-                      <DepositModal
+          <div className="col-1">
+            <div className="text-[#669ca0]">APR%</div>
+            <div className="text-white md:text-[3rem] text-[2rem]">
+              {numeral(Number(aprValue).toFixed(2))
+                .format("0.0a")
+                .toUpperCase()}
+              %
+            </div>
+          </div>
+          <div className="col-1">
+            <div className="text-[#669ca0]">Earning</div>
+            <div className="text-green-400 md:text-[3rem] text-[2rem] text-gradient-to-b">
+              {earned > 0
+                ? numeral(Number(earned)).format("0.000a").toUpperCase()
+                : 0}
+            </div>
+            <span className="text-sm text-white">4TOKEN</span>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
+      {expandCard ? (
+        <div>
+          <div className="grid-cols-3 hidden md:grid mt-[20px]">
+            <div className="col-1">
+              <div className="text-[#669ca0]">
+                {Number(allowanceFrom) > 0 ? (
+                  <>
+                    <DepositModal
+                      contract={pool.contractAddress}
+                      poolId={pool.poolId}
+                      name={pool.name}
+                      userBalance={userBalance}
+                      endedpool={pool.isFinished}
+                    />
+                    {staked > 0 ? (
+                      <WithdrawtModal
                         contract={pool.contractAddress}
                         poolId={pool.poolId}
                         name={pool.name}
-                        userBalance={userBalance}
-                        endedpool={pool.isFinished}
+                        userBalance={staked}
+                        locked={pool.locked}
+                        isGrater={isGreater}
                       />
-                      {staked > 0 ? (
-                        <WithdrawtModal
-                          contract={pool.contractAddress}
-                          poolId={pool.poolId}
-                          name={pool.name}
-                          userBalance={staked}
-                          locked={pool.locked}
-                          isGrater={isGreater}
-                        />
-                      ) : (
-                        ""
-                      )}
-                    </>
-                  ) : (
-                    <button
-                      onClick={HanddleApprove}
-                      className={`${approving ? "opacity-25" : ""} ${
-                        isConnected ? "" : "opacity-25"
-                      } bg-gradient-to-br w-[120px] from-green-400 ml-1 to-yellow-300 text-black text-sm  p-3 pl-5 pr-5 rounded-[1rem]`}
-                    >
-                      {approving ? (
-                        <div className="flex items-center justify-center gap-2">
-                          <span className="hidden md:block">Approve </span>
+                    ) : (
+                      ""
+                    )}
+                  </>
+                ) : (
+                  <button
+                    onClick={HanddleApprove}
+                    className={`${approving ? "opacity-25" : ""} ${
+                      isConnected ? "" : "opacity-25"
+                    } bg-gradient-to-br w-[120px] from-green-400 ml-1 to-yellow-300 text-black text-sm  p-3 pl-5 pr-5 rounded-[1rem]`}
+                  >
+                    {approving ? (
+                      <div className="flex items-center justify-center gap-2">
+                        <span className="hidden md:block">Approve </span>
 
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="m-0 bg-transparent block antialiased"
-                            width="18px"
-                            height="18px"
-                            viewBox="0 0 100 100"
-                            preserveAspectRatio="xMidYMid"
-                            style={{ shapeRendering: "auto" }}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="m-0 bg-transparent block antialiased"
+                          width="18px"
+                          height="18px"
+                          viewBox="0 0 100 100"
+                          preserveAspectRatio="xMidYMid"
+                          style={{ shapeRendering: "auto" }}
+                        >
+                          <circle
+                            cx="50"
+                            cy="50"
+                            r="0"
+                            fill="none"
+                            stroke="#300313"
+                            strokeWidth="2"
                           >
-                            <circle
-                              cx="50"
-                              cy="50"
-                              r="0"
-                              fill="none"
-                              stroke="#300313"
-                              strokeWidth="2"
-                            >
-                              <animate
-                                attributeName="r"
-                                repeatCount="indefinite"
-                                dur="1s"
-                                values="0;51"
-                                keyTimes="0;1"
-                                keySplines="0 0.2 0.8 1"
-                                calcMode="spline"
-                                begin="0s"
-                              ></animate>
-                              <animate
-                                attributeName="opacity"
-                                repeatCount="indefinite"
-                                dur="1s"
-                                values="1;0"
-                                keyTimes="0;1"
-                                keySplines="0.2 0 0.8 1"
-                                calcMode="spline"
-                                begin="0s"
-                              ></animate>
-                            </circle>
-                            <circle
-                              cx="50"
-                              cy="50"
-                              r="0"
-                              fill="none"
-                              stroke="#46dff0"
-                              strokeWidth="2"
-                            >
-                              <animate
-                                attributeName="r"
-                                repeatCount="indefinite"
-                                dur="1s"
-                                values="0;51"
-                                keyTimes="0;1"
-                                keySplines="0 0.2 0.8 1"
-                                calcMode="spline"
-                                begin="-0.5s"
-                              ></animate>
-                              <animate
-                                attributeName="opacity"
-                                repeatCount="indefinite"
-                                dur="1s"
-                                values="1;0"
-                                keyTimes="0;1"
-                                keySplines="0.2 0 0.8 1"
-                                calcMode="spline"
-                                begin="-0.5s"
-                              ></animate>
-                            </circle>
-                          </svg>
-                        </div>
-                      ) : (
-                        <span className="hidden md:block">{enableButton} </span>
-                      )}
-                    </button>
-                  )}
-                </div>
+                            <animate
+                              attributeName="r"
+                              repeatCount="indefinite"
+                              dur="1s"
+                              values="0;51"
+                              keyTimes="0;1"
+                              keySplines="0 0.2 0.8 1"
+                              calcMode="spline"
+                              begin="0s"
+                            ></animate>
+                            <animate
+                              attributeName="opacity"
+                              repeatCount="indefinite"
+                              dur="1s"
+                              values="1;0"
+                              keyTimes="0;1"
+                              keySplines="0.2 0 0.8 1"
+                              calcMode="spline"
+                              begin="0s"
+                            ></animate>
+                          </circle>
+                          <circle
+                            cx="50"
+                            cy="50"
+                            r="0"
+                            fill="none"
+                            stroke="#46dff0"
+                            strokeWidth="2"
+                          >
+                            <animate
+                              attributeName="r"
+                              repeatCount="indefinite"
+                              dur="1s"
+                              values="0;51"
+                              keyTimes="0;1"
+                              keySplines="0 0.2 0.8 1"
+                              calcMode="spline"
+                              begin="-0.5s"
+                            ></animate>
+                            <animate
+                              attributeName="opacity"
+                              repeatCount="indefinite"
+                              dur="1s"
+                              values="1;0"
+                              keyTimes="0;1"
+                              keySplines="0.2 0 0.8 1"
+                              calcMode="spline"
+                              begin="-0.5s"
+                            ></animate>
+                          </circle>
+                        </svg>
+                      </div>
+                    ) : (
+                      <span className="hidden md:block">{enableButton} </span>
+                    )}
+                  </button>
+                )}
               </div>
+            </div>
+            <div className="col-1">
+              <div className="text-[#669ca0] mt-[20px]">
+                <Link
+                  href={buyUrl}
+                  target="_blank"
+                  className="bg-gradient-to-br from-green-400 to-yellow-300 text-black text-sm pl-5 pr-5 rounded-[1rem]"
+                >
+                  {pool.isLp ? "Add" : "Buy"} {pool.name}
+                </Link>
+              </div>
+            </div>
+            <div className="col-1">
+              <div className="text-[#669ca0] mt-[20px]">
+                <Link
+                  href={
+                    chain?.blockExplorers?.default.url +
+                    "/address/" +
+                    getAddress(pool.contractAddress, chain?.id)
+                  }
+                  target="_blank"
+                  className="bg-gradient-to-br from-green-400 to-yellow-300 text-black text-sm pl-5 pr-5 rounded-[1rem]"
+                >
+                  Contract Address
+                </Link>
+              </div>
+            </div>
+          </div>
+          <div className="md:hidden mt-[20px] ">
+            <div className="col-1">
+              <div className="text-[#669ca0]">
+                {Number(allowanceFrom) > 0 ? (
+                  <>
+                    <DepositModal
+                      contract={pool.contractAddress}
+                      poolId={pool.poolId}
+                      name={pool.name}
+                      userBalance={userBalance}
+                      endedpool={pool.isFinished}
+                    />
+                    {staked > 0 ? (
+                      <WithdrawtModal
+                        contract={pool.contractAddress}
+                        poolId={pool.poolId}
+                        name={pool.name}
+                        userBalance={staked}
+                        locked={pool.locked}
+                        isGrater={isGreater}
+                      />
+                    ) : (
+                      ""
+                    )}
+                  </>
+                ) : (
+                  <button
+                    onClick={HanddleApprove}
+                    className={`${approving ? "opacity-25" : ""} ${
+                      isConnected ? "" : "opacity-25"
+                    } bg-gradient-to-br w-[120px] from-green-400 ml-1 to-yellow-300 text-black text-sm  p-3 pl-5 pr-5 rounded-[1rem]`}
+                  >
+                    {approving ? (
+                      <div className="flex items-center justify-center gap-2">
+                        <span className="hidden md:block">Approve </span>
+
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="m-0 bg-transparent block antialiased"
+                          width="18px"
+                          height="18px"
+                          viewBox="0 0 100 100"
+                          preserveAspectRatio="xMidYMid"
+                          style={{ shapeRendering: "auto" }}
+                        >
+                          <circle
+                            cx="50"
+                            cy="50"
+                            r="0"
+                            fill="none"
+                            stroke="#300313"
+                            strokeWidth="2"
+                          >
+                            <animate
+                              attributeName="r"
+                              repeatCount="indefinite"
+                              dur="1s"
+                              values="0;51"
+                              keyTimes="0;1"
+                              keySplines="0 0.2 0.8 1"
+                              calcMode="spline"
+                              begin="0s"
+                            ></animate>
+                            <animate
+                              attributeName="opacity"
+                              repeatCount="indefinite"
+                              dur="1s"
+                              values="1;0"
+                              keyTimes="0;1"
+                              keySplines="0.2 0 0.8 1"
+                              calcMode="spline"
+                              begin="0s"
+                            ></animate>
+                          </circle>
+                          <circle
+                            cx="50"
+                            cy="50"
+                            r="0"
+                            fill="none"
+                            stroke="#46dff0"
+                            strokeWidth="2"
+                          >
+                            <animate
+                              attributeName="r"
+                              repeatCount="indefinite"
+                              dur="1s"
+                              values="0;51"
+                              keyTimes="0;1"
+                              keySplines="0 0.2 0.8 1"
+                              calcMode="spline"
+                              begin="-0.5s"
+                            ></animate>
+                            <animate
+                              attributeName="opacity"
+                              repeatCount="indefinite"
+                              dur="1s"
+                              values="1;0"
+                              keyTimes="0;1"
+                              keySplines="0.2 0 0.8 1"
+                              calcMode="spline"
+                              begin="-0.5s"
+                            ></animate>
+                          </circle>
+                        </svg>
+                      </div>
+                    ) : (
+                      <span className="block md:hidden">{enableButton}</span>
+                    )}
+                  </button>
+                )}
+              </div>
+            </div>
+            <div className="grid grid-cols-2">
               <div className="col-1">
                 <div className="text-[#669ca0] mt-[20px]">
                   <Link
@@ -645,153 +864,12 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
                 </div>
               </div>
             </div>
-            <div className="md:hidden mt-[20px] ">
-              <div className="col-1">
-                <div className="text-[#669ca0]">
-                  {Number(allowanceFrom) > 0 ? (
-                    <>
-                      <DepositModal
-                        contract={pool.contractAddress}
-                        poolId={pool.poolId}
-                        name={pool.name}
-                        userBalance={userBalance}
-                        endedpool={pool.isFinished}
-                      />
-                      {staked > 0 ? (
-                        <WithdrawtModal
-                          contract={pool.contractAddress}
-                          poolId={pool.poolId}
-                          name={pool.name}
-                          userBalance={staked}
-                          locked={pool.locked}
-                          isGrater={isGreater}
-                        />
-                      ) : (
-                        ""
-                      )}
-                    </>
-                  ) : (
-                    <button
-                      onClick={HanddleApprove}
-                      className={`${approving ? "opacity-25" : ""} ${
-                        isConnected ? "" : "opacity-25"
-                      } bg-gradient-to-br w-[120px] from-green-400 ml-1 to-yellow-300 text-black text-sm  p-3 pl-5 pr-5 rounded-[1rem]`}
-                    >
-                      {approving ? (
-                        <div className="flex items-center justify-center gap-2">
-                          <span className="hidden md:block">Approve </span>
-
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="m-0 bg-transparent block antialiased"
-                            width="18px"
-                            height="18px"
-                            viewBox="0 0 100 100"
-                            preserveAspectRatio="xMidYMid"
-                            style={{ shapeRendering: "auto" }}
-                          >
-                            <circle
-                              cx="50"
-                              cy="50"
-                              r="0"
-                              fill="none"
-                              stroke="#300313"
-                              strokeWidth="2"
-                            >
-                              <animate
-                                attributeName="r"
-                                repeatCount="indefinite"
-                                dur="1s"
-                                values="0;51"
-                                keyTimes="0;1"
-                                keySplines="0 0.2 0.8 1"
-                                calcMode="spline"
-                                begin="0s"
-                              ></animate>
-                              <animate
-                                attributeName="opacity"
-                                repeatCount="indefinite"
-                                dur="1s"
-                                values="1;0"
-                                keyTimes="0;1"
-                                keySplines="0.2 0 0.8 1"
-                                calcMode="spline"
-                                begin="0s"
-                              ></animate>
-                            </circle>
-                            <circle
-                              cx="50"
-                              cy="50"
-                              r="0"
-                              fill="none"
-                              stroke="#46dff0"
-                              strokeWidth="2"
-                            >
-                              <animate
-                                attributeName="r"
-                                repeatCount="indefinite"
-                                dur="1s"
-                                values="0;51"
-                                keyTimes="0;1"
-                                keySplines="0 0.2 0.8 1"
-                                calcMode="spline"
-                                begin="-0.5s"
-                              ></animate>
-                              <animate
-                                attributeName="opacity"
-                                repeatCount="indefinite"
-                                dur="1s"
-                                values="1;0"
-                                keyTimes="0;1"
-                                keySplines="0.2 0 0.8 1"
-                                calcMode="spline"
-                                begin="-0.5s"
-                              ></animate>
-                            </circle>
-                          </svg>
-                        </div>
-                      ) : (
-                        <span className="block md:hidden">{enableButton}</span>
-                      )}
-                    </button>
-                  )}
-                </div>
-              </div>
-              <div className="grid grid-cols-2">
-                <div className="col-1">
-                  <div className="text-[#669ca0] mt-[20px]">
-                    <Link
-                      href={buyUrl}
-                      target="_blank"
-                      className="bg-gradient-to-br from-green-400 to-yellow-300 text-black text-sm pl-5 pr-5 rounded-[1rem]"
-                    >
-                      {pool.isLp ? "Add" : "Buy"} {pool.name}
-                    </Link>
-                  </div>
-                </div>
-                <div className="col-1">
-                  <div className="text-[#669ca0] mt-[20px]">
-                    <Link
-                      href={
-                        chain?.blockExplorers?.default.url +
-                        "/address/" +
-                        getAddress(pool.contractAddress, chain?.id)
-                      }
-                      target="_blank"
-                      className="bg-gradient-to-br from-green-400 to-yellow-300 text-black text-sm pl-5 pr-5 rounded-[1rem]"
-                    >
-                      Contract Address
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
-        ) : (
-          ""
-        )}
-      </div>
-    </>
+        </div>
+      ) : (
+        ""
+      )}
+    </div>
   );
 };
 

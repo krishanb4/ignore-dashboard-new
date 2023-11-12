@@ -38,7 +38,7 @@ export function useStaked(
   const { data } = useContractRead({
     address: contractaddress,
     abi: stakeContract,
-    functionName: "balanceOf",
+    functionName: "claimedUsers",
     args: [address],
     watch: true,
   });
@@ -94,11 +94,22 @@ export function useTokenBalance(
   return Number(data?.value) / 10 ** 18;
 }
 
-export function useContractConfig(contractaddress: `0x${string}`) {
+type ClaimArgs = {
+  amount: BigNumber;
+  nonce: BigNumber;
+  receiver: string;
+  signature: any;
+};
+
+export function useContractConfig(
+  contractaddress: `0x${string}`,
+  arg?: ClaimArgs
+) {
   const { config, error } = usePrepareContractWrite({
     address: contractaddress,
     abi: stakeContract,
-    functionName: "getReward",
+    functionName: "claimStakedAmount",
+    args: Object.values(arg || {}),
   });
   return config;
 }
@@ -113,8 +124,8 @@ export function useRewardRate(contractaddress: `0x${string}`) {
   return Number(data) / 10 ** 18;
 }
 
-export function useContracts(contractaddress: `0x${string}`) {
-  const config = useContractConfig(contractaddress);
+export function useContracts(contractaddress: `0x${string}`, arg?: ClaimArgs) {
+  const config = useContractConfig(contractaddress, arg);
   const { data, isLoading, isSuccess, write, status } = useContractWrite({
     ...config,
   });

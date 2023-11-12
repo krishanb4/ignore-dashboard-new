@@ -38,13 +38,13 @@ const SelectButtons: React.FC = () => {
 
   let componentToRender;
 
-  if (selectedButton === "Dashboard") {
-    componentToRender = <Charts />;
-  } else if (selectedButton === "Staking") {
-    componentToRender = <StakingCards />;
-  } else if (chain?.id === 56 && selectedButton === "Farming") {
-    componentToRender = <Farming />;
-  }
+  // if (selectedButton === "Dashboard") {
+  //   componentToRender = <Charts />;
+  // } else if (selectedButton === "Staking") {
+  //   componentToRender = <StakingCards />;
+  // } else if (chain?.id === 56 && selectedButton === "Farming") {
+  //   componentToRender = <Farming />;
+  // }
 
   return (
     <>
@@ -55,7 +55,7 @@ const SelectButtons: React.FC = () => {
             aria-label="Tabs"
             role="tablist"
           >
-            {SelectButton.map((selectButton) =>
+            {/* {SelectButton.map((selectButton) =>
               chain?.id === 1116 && selectButton.name === "Farming" ? null : (
                 <button
                   key={selectButton.id}
@@ -74,12 +74,12 @@ const SelectButtons: React.FC = () => {
                   {selectButton.name}
                 </button>
               )
-            )}
+            )} */}
           </nav>
         </div>
       </div>
 
-      {componentToRender}
+      <StakingCards />
     </>
   );
 };
