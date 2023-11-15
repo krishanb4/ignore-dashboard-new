@@ -45,7 +45,7 @@ const pools: PoolConfig[] = [
       1116: "0x98564e70c7fcc6d947ffe6d9efed5ba68b306f2e",
     },
     contractAddress: {
-      56: "0xdeb4fAF9E3d8092aFEdc4B25f2a3d5e61Aa32Dd8",
+      56: "0xdD70125F56cD103B321981Aab17D54A25DB44E5d",
       1116: "0x78F1072ca3A8279D3d961ab904d61E3032C2302a",
     },
     isLp: false,
@@ -74,7 +74,7 @@ const pools: PoolConfig[] = [
       1116: "0x98564e70c7fcc6d947ffe6d9efed5ba68b306f2e",
     },
     contractAddress: {
-      56: "0xf298dBeCe9C82548869545Fa219668AFE523AF02",
+      56: "0xeC16a72e96e71640175CbEBEcb9a4FB281C6cEFA",
       1116: "0xCD2A88F7EA6E59F7f78714C41eda99066d54B352",
     },
     isLp: false,
@@ -103,7 +103,7 @@ const pools: PoolConfig[] = [
       1116: "0x98564e70c7fcc6d947ffe6d9efed5ba68b306f2e",
     },
     contractAddress: {
-      56: "0x6bDEd208a93226ed57115d65718b7586EFd8Ea1c",
+      56: "0x471410a0473679a8C7dda5389E875Fd8c0880C5A",
       1116: "0xD3B87d4321a70c8754A47bCCa79d544Bc9DC381b",
     },
     isLp: false,

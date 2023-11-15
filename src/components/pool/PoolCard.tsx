@@ -48,8 +48,11 @@ import {
   useTransaction,
 } from "@/hooks/useCalls";
 import NoLock from "./no_lock.json";
+import NoLockBsc from "./no_lock_bsc.json";
 import DayLock from "./day_lock.json";
+import DayLockBsc from "./day_lock_bsc.json";
 import YearLock from "./year_lock.json";
+import YearLockBsc from "./year_lock_bsc.json";
 import { pipeline } from "stream";
 
 export interface PoolsWithStakedValue extends Pool {
@@ -119,71 +122,167 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
 
   useEffect(() => {
     if (pool.poolCategory === "No Lock") {
-      const filtered = NoLock.filter((element) => element.address == address);
+      if (chain?.id === 56) {
+        const filtered = NoLockBsc.filter(
+          (element) => element.address == address
+        );
 
-      if (filtered.length > 0) {
-        const element = filtered[0];
-        setIsEligible(true);
-        if (claimed) {
-          setEligibleAmount(0);
+        if (filtered.length > 0) {
+          const element = filtered[0];
+          setIsEligible(true);
+          if (claimed) {
+            setEligibleAmount(0);
+          } else {
+            setEligibleAmount(Number(element.amount) / 10 ** 18);
+          }
+
+          setArgs({
+            amount: BigNumber.from(element.amount),
+            nonce: BigNumber.from(element.nonce),
+            receiver: element.address,
+            signature: element.signature,
+          });
         } else {
-          setEligibleAmount(Number(element.amount) / 10 ** 18);
+          setIsEligible(false);
+          setArgs({} as ClaimArgs);
         }
+      } else if (chain?.id === 1116) {
+        const filtered = NoLock.filter((element) => element.address == address);
 
-        setArgs({
-          amount: BigNumber.from(element.amount),
-          nonce: BigNumber.from(element.nonce),
-          receiver: element.address,
-          signature: element.signature,
-        });
+        if (filtered.length > 0) {
+          const element = filtered[0];
+          setIsEligible(true);
+          if (claimed) {
+            setEligibleAmount(0);
+          } else {
+            setEligibleAmount(Number(element.amount) / 10 ** 18);
+          }
+
+          setArgs({
+            amount: BigNumber.from(element.amount),
+            nonce: BigNumber.from(element.nonce),
+            receiver: element.address,
+            signature: element.signature,
+          });
+        } else {
+          setIsEligible(false);
+          setArgs({} as ClaimArgs);
+        }
       } else {
         setIsEligible(false);
         setArgs({} as ClaimArgs);
+        setEligibleAmount(0);
       }
     } else if (pool.poolCategory === "15D Lock") {
-      const filtered = DayLock.filter((element) => element.address == address);
+      if (chain?.id === 56) {
+        const filtered = DayLockBsc.filter(
+          (element) => element.address == address
+        );
 
-      if (filtered.length > 0) {
-        const element = filtered[0];
-        setIsEligible(true);
-        if (claimed) {
-          setEligibleAmount(0);
+        if (filtered.length > 0) {
+          const element = filtered[0];
+          setIsEligible(true);
+          if (claimed) {
+            setEligibleAmount(0);
+          } else {
+            setEligibleAmount(Number(element.amount) / 10 ** 18);
+          }
+
+          setArgs({
+            amount: BigNumber.from(element.amount),
+            nonce: BigNumber.from(element.nonce),
+            receiver: element.address,
+            signature: element.signature,
+          });
         } else {
-          setEligibleAmount(Number(element.amount) / 10 ** 18);
+          setIsEligible(false);
+          setArgs({} as ClaimArgs);
         }
-        setArgs({
-          amount: BigNumber.from(element.amount),
-          nonce: BigNumber.from(element.nonce),
-          receiver: element.address,
-          signature: element.signature,
-        });
+      } else if (chain?.id === 1116) {
+        const filtered = DayLock.filter(
+          (element) => element.address == address
+        );
+
+        if (filtered.length > 0) {
+          const element = filtered[0];
+          setIsEligible(true);
+          if (claimed) {
+            setEligibleAmount(0);
+          } else {
+            setEligibleAmount(Number(element.amount) / 10 ** 18);
+          }
+
+          setArgs({
+            amount: BigNumber.from(element.amount),
+            nonce: BigNumber.from(element.nonce),
+            receiver: element.address,
+            signature: element.signature,
+          });
+        } else {
+          setIsEligible(false);
+          setArgs({} as ClaimArgs);
+        }
       } else {
         setIsEligible(false);
         setArgs({} as ClaimArgs);
+        setEligibleAmount(0);
       }
     } else if (pool.poolCategory === "1Y Lock") {
-      const filtered = YearLock.filter((element) => element.address == address);
+      if (chain?.id === 56) {
+        const filtered = YearLockBsc.filter(
+          (element) => element.address == address
+        );
 
-      if (filtered.length > 0) {
-        const element = filtered[0];
-        setIsEligible(true);
-        if (claimed) {
-          setEligibleAmount(0);
+        if (filtered.length > 0) {
+          const element = filtered[0];
+          setIsEligible(true);
+          if (claimed) {
+            setEligibleAmount(0);
+          } else {
+            setEligibleAmount(Number(element.amount) / 10 ** 18);
+          }
+
+          setArgs({
+            amount: BigNumber.from(element.amount),
+            nonce: BigNumber.from(element.nonce),
+            receiver: element.address,
+            signature: element.signature,
+          });
         } else {
-          setEligibleAmount(Number(element.amount) / 10 ** 18);
+          setIsEligible(false);
+          setArgs({} as ClaimArgs);
         }
-        setArgs({
-          amount: BigNumber.from(element.amount),
-          nonce: BigNumber.from(element.nonce),
-          receiver: element.address,
-          signature: element.signature,
-        });
+      } else if (chain?.id === 1116) {
+        const filtered = YearLock.filter(
+          (element) => element.address == address
+        );
+
+        if (filtered.length > 0) {
+          const element = filtered[0];
+          setIsEligible(true);
+          if (claimed) {
+            setEligibleAmount(0);
+          } else {
+            setEligibleAmount(Number(element.amount) / 10 ** 18);
+          }
+
+          setArgs({
+            amount: BigNumber.from(element.amount),
+            nonce: BigNumber.from(element.nonce),
+            receiver: element.address,
+            signature: element.signature,
+          });
+        } else {
+          setIsEligible(false);
+          setArgs({} as ClaimArgs);
+        }
       } else {
         setIsEligible(false);
         setArgs({} as ClaimArgs);
+        setEligibleAmount(0);
       }
     }
-  }, [address, pool, claimed]);
+  }, [address, pool, claimed, chain?.id]);
 
   const [isGreater, setIsGreater] = useState(false);
 
@@ -307,13 +406,13 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
   const [aprValue, setAprValue] = useState(0);
   const [buyUrl, setBuyUrl] = useState("");
 
-  useEffect(() => {
-    if (chain?.id && pool.buyURL) {
-      const chainId = chain?.id;
+  // useEffect(() => {
+  //   if (chain?.id && pool.buyURL) {
+  //     const chainId = chain?.id;
 
-      setBuyUrl(pool.buyURL[chainId].toString());
-    }
-  }, [chain?.id, pool]);
+  //     setBuyUrl(pool.buyURL[chainId].toString());
+  //   }
+  // }, [chain?.id, pool]);
 
   // useEffect(() => {
   //   if (pool.isLp) {
@@ -439,7 +538,6 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
           <div className="grid grid-cols-1 gap-1 text-left">
             <span className="font-medium text-white text-[15px] ml-[10px]">
               {pool.name}
-              {pool.poolId}
             </span>
             <span className=" text-gray-400 text-sm flex-none ml-[10px] ">
               {pool.poolCategory}
