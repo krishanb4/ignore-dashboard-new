@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>IgnoreFud Dashboard</title>
+        <title>IgnoreFud Unstake</title>
         <meta name="description" content="IgnoreFud Dashboard" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
