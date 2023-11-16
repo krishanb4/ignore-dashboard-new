@@ -34,13 +34,14 @@ export function useAllowance(
 
 export function useStaked(
   address: `0x${string}` | undefined,
-  contractaddress: `0x${string}`
+  contractaddress: `0x${string}`,
+  poolId: number
 ) {
   const { data } = useContractRead({
     address: contractaddress,
     abi: stakeContract,
     functionName: "claimedUsers",
-    args: [address],
+    args: [address, poolId],
     watch: true,
   });
 
@@ -106,6 +107,9 @@ export function useContractConfig(
   contractaddress: `0x${string}`,
   arg?: ClaimArgs
 ) {
+  console.log(contractaddress);
+  console.log(arg);
+
   const { config, error } = usePrepareContractWrite({
     address: contractaddress,
     abi: stakeContract,

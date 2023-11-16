@@ -67,6 +67,7 @@ interface PoolCardProps {
 type ClaimArgs = {
   amount: BigNumber;
   nonce: BigNumber;
+  poolId: number;
   receiver: string;
   signature: any;
 };
@@ -93,7 +94,8 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
 
   const claimed = useStaked(
     address,
-    getAddress(pool.contractAddress, chain?.id) as `0x${string}`
+    getAddress(pool.contractAddress, chain?.id) as `0x${string}`,
+    pool.poolId
   );
 
   // const rewardRate = useRewardRate(
@@ -139,6 +141,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
           setArgs({
             amount: BigNumber.from(element.amount),
             nonce: BigNumber.from(element.nonce),
+            poolId: 1,
             receiver: element.address,
             signature: element.signature,
           });
@@ -161,6 +164,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
           setArgs({
             amount: BigNumber.from(element.amount),
             nonce: BigNumber.from(element.nonce),
+            poolId: 1,
             receiver: element.address,
             signature: element.signature,
           });
@@ -191,6 +195,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
           setArgs({
             amount: BigNumber.from(element.amount),
             nonce: BigNumber.from(element.nonce),
+            poolId: 2,
             receiver: element.address,
             signature: element.signature,
           });
@@ -215,6 +220,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
           setArgs({
             amount: BigNumber.from(element.amount),
             nonce: BigNumber.from(element.nonce),
+            poolId: 2,
             receiver: element.address,
             signature: element.signature,
           });
@@ -245,6 +251,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
           setArgs({
             amount: BigNumber.from(element.amount),
             nonce: BigNumber.from(element.nonce),
+            poolId: 3,
             receiver: element.address,
             signature: element.signature,
           });
@@ -269,6 +276,7 @@ const PoolCard: React.FC<React.PropsWithChildren<PoolCardProps>> = ({
           setArgs({
             amount: BigNumber.from(element.amount),
             nonce: BigNumber.from(element.nonce),
+            poolId: 3,
             receiver: element.address,
             signature: element.signature,
           });
